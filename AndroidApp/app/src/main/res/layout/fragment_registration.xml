@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="@dimen/borderResgistrer"
+    android:background="@color/violet">
+
+    <EditText
+        android:id="@+id/user_surmane"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/surnameInput"
+        android:padding="@dimen/defaultMargin"
+        android:background="@color/gray"/>
+
+    <EditText
+        android:id="@+id/user_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/nameInput"
+        android:layout_marginTop="@dimen/defaultMargin"
+        android:padding="@dimen/defaultMargin"
+        android:background="@color/gray"/>
+
+    <Spinner
+        android:id="@+id/country_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/defaultMargin"
+        android:entries="@array/chooseCountrySpinnerInput"
+        android:padding="@dimen/defaultMargin"
+        android:background="@color/gray"/>
+
+    <Spinner
+        android:id="@+id/mark_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/defaultMargin"
+        android:entries="@array/chooseVehiculeMarkSpinnerInput"
+        android:padding="@dimen/defaultMargin"
+        android:background="@color/gray"/>
+
+
+    <Button
+        android:id="@+id/confirm_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="120dp"
+        android:background="@color/gray"
+        android:padding="@dimen/defaultMargin"
+        android:text="@string/confirmButtonText"
+        android:textSize="18dp" />
+
+</LinearLayout>

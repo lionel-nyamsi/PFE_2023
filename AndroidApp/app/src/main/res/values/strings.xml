@@ -1,3 +1,49 @@
 <resources>
-    <string name="app_name">LI-ION ASSIST</string>
+
+    <!-- Home page -->
+    <string name="app_name">LIION ASSIST</string>
+    <string name="slogan">STAY FOCUSED ON THE ROAD</string>
+
+
+    <!-- Second page text -->
+    <string name="welcomeMessage">Bienvenue !</string>
+
+
+    <!-- Registration page -->
+    <string name="surnameInput">Entrez votre prénom</string>
+    <string name="nameInput">Entrez vote nom</string>
+    <string name="checkBoxText">Se souvenir de moi.</string>
+    <string name="confirmButtonText">CONFIRMER</string>
+
+    <string-array name="chooseCountrySpinnerInput">
+        <item>Pays : Allemagne</item>
+        <item>Pays : Cameroun</item>
+        <item>Pays : France</item>
+    </string-array>
+
+    <string-array name="chooseVehiculeMarkSpinnerInput">
+        <item>Marque du véhicule : Audi</item>
+        <item>Marque du véhicule : Mercedes Benz</item>
+        <item>Marque du véhicule : Lexus</item>
+        <item>Marque du véhicule : Toyota</item>
+    </string-array>
+
+
+    <!-- Connection t the rapsberry pi -->
+    <string name="instructionText">Pour initialiser la connexion
+        avec la console, cliquer sur le bouton conexion ci-dessous.</string>
+    <string name="connectionButton">Connexion</string>
+
+
+    <!-- Scanning page -->
+    <string name="scanInstruction">Scannez le QR Code affiché sur la console.</string>
+
+
+    <!-- Confirm the connection to the rapsberry pi -->
+    <string name="deconnectionButtunText">Deconnexion</string>
+
+
+    <!-- General settings -->
+    <string name="textAlignValue">center</string>
+
 </resources>
