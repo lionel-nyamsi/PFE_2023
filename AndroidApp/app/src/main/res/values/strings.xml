@@ -12,20 +12,22 @@
     <!-- Registration page -->
     <string name="surnameInput">Entrez votre prénom</string>
     <string name="nameInput">Entrez vote nom</string>
+    <string name="countryLabel">Pays :</string>
+    <string name="markVehiculeLabel">Marque du véhicule : </string>
     <string name="checkBoxText">Se souvenir de moi.</string>
     <string name="confirmButtonText">CONFIRMER</string>
 
     <string-array name="chooseCountrySpinnerInput">
-        <item>Pays : Allemagne</item>
-        <item>Pays : Cameroun</item>
-        <item>Pays : France</item>
+        <item>Cameroun</item>
+        <item>Allemagne</item>
+        <item>France</item>
     </string-array>
 
     <string-array name="chooseVehiculeMarkSpinnerInput">
-        <item>Marque du véhicule : Audi</item>
-        <item>Marque du véhicule : Mercedes Benz</item>
-        <item>Marque du véhicule : Lexus</item>
-        <item>Marque du véhicule : Toyota</item>
+        <item>Toyota</item>
+        <item>Mercedes Benz</item>
+        <item>Lexus</item>
+        <item>Audi</item>
     </string-array>
 
 

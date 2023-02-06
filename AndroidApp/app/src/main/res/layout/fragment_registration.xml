@@ -24,23 +24,53 @@
         android:padding="@dimen/defaultMargin"
         android:background="@color/gray"/>
 
-    <Spinner
-        android:id="@+id/country_spinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/defaultMargin"
-        android:entries="@array/chooseCountrySpinnerInput"
-        android:padding="@dimen/defaultMargin"
-        android:background="@color/gray"/>
 
-    <Spinner
-        android:id="@+id/mark_spinner"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/gray"
+        android:orientation="horizontal"
         android:layout_marginTop="@dimen/defaultMargin"
-        android:entries="@array/chooseVehiculeMarkSpinnerInput"
-        android:padding="@dimen/defaultMargin"
-        android:background="@color/gray"/>
+        android:padding="@dimen/defaultMargin">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/countryLabel"
+            android:textSize="15dp"/>
+
+        <Spinner
+            android:id="@+id/country_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/chooseCountrySpinnerInput"
+            android:layout_marginLeft="@dimen/defaultMargin"/>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/gray"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/defaultMargin"
+        android:padding="@dimen/defaultMargin">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/markVehiculeLabel"
+            android:textSize="15dp"/>
+
+        <Spinner
+            android:id="@+id/mark_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/chooseVehiculeMarkSpinnerInput"
+            android:layout_marginLeft="@dimen/defaultMargin"/>
+
+    </LinearLayout>
 
 
     <Button

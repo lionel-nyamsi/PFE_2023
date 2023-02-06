@@ -25,6 +25,6 @@
 
     <style name="chooseTextStyle">
         <item name="android:textColor">@color/black</item>
-        <item name="android:textSize">17dp</item>
+        <item name="android:textSize">15dp</item>
     </style>
 </resources>
