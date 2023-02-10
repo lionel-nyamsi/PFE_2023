@@ -6,4 +6,5 @@
     <dimen name="headerMargin">80dp</dimen>
     <dimen name="borderResgistrer">50dp</dimen>
     <dimen name="layoutMargin">50dp</dimen>
+    <dimen name="marginScanBox">100dp</dimen>
 </resources>

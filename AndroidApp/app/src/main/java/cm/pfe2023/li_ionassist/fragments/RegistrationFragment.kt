@@ -5,10 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import cm.pfe2023.li_ionassist.IntermediateActivity
+import cm.pfe2023.li_ionassist.MainActivity
 import cm.pfe2023.li_ionassist.R
 
-class RegistrationFragment : Fragment() {
-
+class RegistrationFragment() : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
