@@ -3,41 +3,6 @@ import PIL.Image
 import qrcode
 
 
-class Icon:
-    nombre_cree = 0
-
-    def __init__(self, parent, nom, police, source_image, taille, xligne, ycolone):
-        Icon.nombre_cree += 1
-        self.parent = parent
-        self.nom = nom
-        self.police = police
-        self.source_image = source_image
-        self.taille = taille
-        self.xligne = xligne
-        self.ycolone = ycolone
-
-    def creer(self):
-        frame = customtkinter.CTkFrame(self.parent, width=self.taille, height=self.taille, fg_color="#0F0332")
-        frame.grid(row=self.xligne, column=self.ycolone, padx=5)
-        frame.grid_rowconfigure(0)
-        frame.grid_rowconfigure(1)
-        img = customtkinter.CTkImage(light_image=PIL.Image.open(self.source_image),
-                                     size=(self.taille, self.taille))
-        image = customtkinter.CTkButton(frame, width=self.taille, height=self.taille, image=img, text="",
-                                        command=self.fenetre, fg_color="#0F0332")
-        image.grid(row=0, column=0)
-        label = customtkinter.CTkLabel(frame, text=self.nom, fg_color="#0F0332",
-                                       font=customtkinter.CTkFont(family="Inter", size=self.police),
-                                       text_color="#FFFFFF")
-        label.grid(row=1, column=0)
-
-    def fenetre(self):
-        """
-
-        :return:
-        """
-
-
 class App(customtkinter.CTk):
 
     def __init__(self):
@@ -92,6 +57,7 @@ class App(customtkinter.CTk):
     def effacer(self):
         for widget in self.winfo_children():
             widget.grid_forget()
+        return self
 
     def fenetre_suivante1(self):
         self.effacer()
@@ -223,6 +189,7 @@ class App(customtkinter.CTk):
         barnav_frame.grid(row=2, column=1, rowspan=1, columnspan=3)
 
         #
+        Icon.nombre_cree = 0
         phone_icon = Icon(barnav_frame, "Telephone", self.default_text_size, "images/phone.png",
                           self.default_icon_dimen, 0, 0)
         phone_icon.creer()
@@ -241,6 +208,48 @@ class App(customtkinter.CTk):
         sms_icon = Icon(barnav_frame, "Messages", self.default_text_size, "images/sms.png",
                         self.default_icon_dimen, 0, 5)
         sms_icon.creer()
+
+
+class Icon:
+    nombre_cree = 0
+
+    def __init__(self, parent, nom, police, source_image, taille, xligne, ycolone):
+        Icon.nombre_cree += 1
+        self.parent = parent
+        self.nom = nom
+        self.police = police
+        self.source_image = source_image
+        self.taille = taille
+        self.xligne = xligne
+        self.ycolone = ycolone
+
+    def creer(self):
+        frame = customtkinter.CTkFrame(self.parent, width=self.taille, height=self.taille, fg_color="#0F0332")
+        frame.grid(row=self.xligne, column=self.ycolone, padx=5)
+        frame.grid_rowconfigure(0)
+        frame.grid_rowconfigure(1)
+        img = customtkinter.CTkImage(light_image=PIL.Image.open(self.source_image),
+                                     size=(self.taille, self.taille))
+        program = """image = customtkinter.CTkButton(frame, width=self.taille, fg_color="#0F0332", height=self.taille, image=img, text="",
+                                        command= self.fenetreIcon"""+str(Icon.nombre_cree)+") \nimage.grid(row=0, column=0)"
+        exec(program)
+        label = customtkinter.CTkLabel(frame, text=self.nom, fg_color="#0F0332",
+                                       font=customtkinter.CTkFont(family="Inter", size=self.police),
+                                       text_color="#FFFFFF")
+        label.grid(row=1, column=0)
+
+    def fenetreIcon1(self):
+        app.fenetre_suivante1()
+    def fenetreIcon2(self):
+        app.fenetre_suivante1()
+    def fenetreIcon3(self):
+        app.fenetre_suivante1()
+    def fenetreIcon4(self):
+        app.fenetre_suivante1()
+    def fenetreIcon5(self):
+        app.fenetre_suivante1()
+    def fenetreIcon6(self):
+        app.fenetre_suivante1()
 
 
 if __name__ == "__main__":
