@@ -193,8 +193,8 @@ class App(customtkinter.CTk):
         phone_icon = Icon(barnav_frame, "Telephone", self.default_text_size, "images/phone.png",
                           self.default_icon_dimen, 0, 0)
         phone_icon.creer()
-        gps_icon = Icon(barnav_frame, "GPS", self.default_text_size, "images/gps.png", self.default_icon_dimen, 0,
-                        1)
+        gps_icon = Icon(barnav_frame, "GPS", self.default_text_size, "images/gps.png",
+                        self.default_icon_dimen, 0, 1)
         gps_icon.creer()
         musique_icon = Icon(barnav_frame, "Music", self.default_text_size, "images/music.png",
                             self.default_icon_dimen, 0, 2)
@@ -231,24 +231,29 @@ class Icon:
         img = customtkinter.CTkImage(light_image=PIL.Image.open(self.source_image),
                                      size=(self.taille, self.taille))
         program = """image = customtkinter.CTkButton(frame, width=self.taille, fg_color="#0F0332", height=self.taille, image=img, text="",
-                                        command= self.fenetreIcon"""+str(Icon.nombre_cree)+") \nimage.grid(row=0, column=0)"
+                                        command= self.fenetre_icon"""+str(Icon.nombre_cree)+") \nimage.grid(row=0, column=0)"
         exec(program)
         label = customtkinter.CTkLabel(frame, text=self.nom, fg_color="#0F0332",
                                        font=customtkinter.CTkFont(family="Inter", size=self.police),
                                        text_color="#FFFFFF")
         label.grid(row=1, column=0)
 
-    def fenetreIcon1(self):
+    def fenetre_icon1(self):
         app.fenetre_suivante1()
-    def fenetreIcon2(self):
+
+    def fenetre_icon2(self):
         app.fenetre_suivante1()
-    def fenetreIcon3(self):
+
+    def fenetre_icon3(self):
         app.fenetre_suivante1()
-    def fenetreIcon4(self):
+
+    def fenetre_icon4(self):
         app.fenetre_suivante1()
-    def fenetreIcon5(self):
+
+    def fenetre_icon5(self):
         app.fenetre_suivante1()
-    def fenetreIcon6(self):
+
+    def fenetre_icon6(self):
         app.fenetre_suivante1()
 
 
