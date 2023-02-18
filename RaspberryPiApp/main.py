@@ -3,43 +3,88 @@ import PIL.Image
 import qrcode
 
 
+class Icon:
+    nombre_cree = 0
+
+    def __init__(self, parent, nom, police, source_image, taille, xligne, ycolone):
+        Icon.nombre_cree += 1
+        self.parent = parent
+        self.nom = nom
+        self.police = police
+        self.source_image = source_image
+        self.taille = taille
+        self.xligne = xligne
+        self.ycolone = ycolone
+
+    def creer(self):
+        frame = customtkinter.CTkFrame(self.parent, width=self.taille, height=self.taille, fg_color="#0F0332")
+        frame.grid(row=self.xligne, column=self.ycolone, padx=5)
+        frame.grid_rowconfigure(0)
+        frame.grid_rowconfigure(1)
+        img = customtkinter.CTkImage(light_image=PIL.Image.open(self.source_image),
+                                     size=(self.taille, self.taille))
+        image = customtkinter.CTkButton(frame, width=self.taille, height=self.taille, image=img, text="",
+                                        command=self.fenetre, fg_color="#0F0332")
+        image.grid(row=0, column=0)
+        label = customtkinter.CTkLabel(frame, text=self.nom, fg_color="#0F0332",
+                                       font=customtkinter.CTkFont(family="Inter", size=self.police),
+                                       text_color="#FFFFFF")
+        label.grid(row=1, column=0)
+
+    def fenetre(self):
+        """
+
+        :return:
+        """
+
+
 class App(customtkinter.CTk):
 
     def __init__(self):
         super().__init__()
 
+        # activities(pages) configuration
+        self.default_text_color = "#C9C5C5"
+        self.default_bg_color = "#0F0332"
+        self.default_bar_color = "#39585B"
+        self.default_text_size = 12
+        self.home_icon_dimen = 50
+        self.default_icon_dimen = 70
+
         # app configuration
         self.geometry("835.8x583.8")
         self.title("LIION ASSIST")
-        self.minsize(835.8, 583.8)
-        self.maxsize(835.8, 583.8)
-        self.configure(fg_color="#0F0332")
-
-        # activities(pages) configuration
-        self.default_text_color="#C9C5C5"
-        self.default_text_size=12
-        self.home_icon_dimen=50
-        self.default_icon_dimen=70
-        self.phone_sms_icon_dimen=self.default_icon_dimen
-        self.default_icon_frame_width=self.default_icon_dimen+15
-        self.default_icon_frame_height=self.default_icon_dimen+25
+        self.minsize(836, 584)
+        self.maxsize(836, 584)
+        self.configure(fg_color=self.default_bg_color)
 
         # create 2x2 grid system
-        self.grid_rowconfigure((0, 1, 2), weight=1)
-        self.grid_columnconfigure((0, 1, 2), weight=1)
+        self.grid_rowconfigure(0, weight=1)
+        self.grid_rowconfigure(1, weight=1)
+        self.grid_rowconfigure(2, weight=1)
+        self.grid_columnconfigure(0, weight=1)
+        self.grid_columnconfigure(1, weight=1)
+        self.grid_columnconfigure(2, weight=1)
 
-        logo = customtkinter.CTkImage(light_image=PIL.Image.open("images/logo.png"), size=(128.1, 163.8))
-        self.frame = customtkinter.CTkFrame(self, width=140, height=220, fg_color="#0F0332")
-        self.frame.grid(row=1, column=1)
-        self.photo = customtkinter.CTkLabel(self.frame, image=logo, text="")
-        self.photo.place(x=20, y=0)
-        self.label1 = customtkinter.CTkLabel(self.frame, text="LIION ASSIST",
-                                             font=customtkinter.CTkFont(family="Inter", size=20), text_color="#FFFFFF")
-        self.label1.place(x=0, y=170)
-        self.label2 = customtkinter.CTkLabel(self.frame, text="STAY FOCUSED ON THE ROAD",
-                                             font=customtkinter.CTkFont(family="Inter", size=9), text_color="#EAA623",
-                                             anchor="n", justify="center")
-        self.label2.place(x=0, y=195)
+        #
+        frame = customtkinter.CTkFrame(self, fg_color=self.default_bg_color)
+        frame.grid(row=1, column=1)
+        frame.grid_rowconfigure(0, weight=1)
+        frame.grid_rowconfigure(1, weight=0)
+        frame.grid_rowconfigure(2, weight=0)
+        logo = customtkinter.CTkImage(light_image=PIL.Image.open("images/logo.png"), size=(128, 164))
+        photo = customtkinter.CTkLabel(frame, image=logo, text="")
+        photo.grid(row=0, column=0, sticky="e")
+        label1 = customtkinter.CTkLabel(frame, text="LIION ASSIST", height=14,
+                                        font=customtkinter.CTkFont(family="Inter", size=20),
+                                        text_color="#FFFFFF", anchor="n")
+        label1.grid(row=1, column=0)
+        label2 = customtkinter.CTkLabel(frame, text="STAY FOCUSED ON THE ROAD", height=10,
+                                        font=customtkinter.CTkFont(family="Inter", size=10), text_color="#EAA623",
+                                        anchor="n")
+        label2.grid(row=2, column=0)
+
+        #
         self.bouton_suivant = customtkinter.CTkButton(self, text="Suivant", width=50, height=20,
                                                       command=self.fenetre_suivante1)
         self.bouton_suivant.grid(row=2, column=1)
@@ -49,11 +94,13 @@ class App(customtkinter.CTk):
             widget.grid_forget()
 
     def fenetre_suivante1(self):
-        # self.bouton_suivant.grid_forget()
-        # self.frame.grid_forget()
         self.effacer()
-        self.grid_rowconfigure((0, 1, 2), weight=1)
-        self.grid_columnconfigure((0, 1, 2), weight=1)
+        self.grid_rowconfigure(0, weight=0)
+        self.grid_rowconfigure(1, weight=1)
+        self.grid_rowconfigure(2, weight=1)
+        self.grid_columnconfigure(0, weight=1)
+        self.grid_columnconfigure(1, weight=1)
+        self.grid_columnconfigure(2, weight=1)
 
         text_instruction = """Pour connecter votre téléphone à votre console multimedia, suivez les étapes suivantes ci dessous: 
 
@@ -77,150 +124,123 @@ class App(customtkinter.CTk):
         img_qr = qr.make_image(fill_color="black", back_color="white")
         img_qr.save("images/qrcode.png")
 
-        logo2 = customtkinter.CTkImage(light_image=PIL.Image.open("images/logo.png"), size=(64.05, 81.9))
-        self.frame2 = customtkinter.CTkFrame(self, width=70, height=110, fg_color="#0F0332")
-        self.frame2.grid(row=0, column=1)
-        self.photo2 = customtkinter.CTkLabel(self.frame2, image=logo2, text="")
-        self.photo2.place(x=10, y=0)
-        self.label21 = customtkinter.CTkLabel(self.frame2, text="LIION ASSIST",
-                                              font=customtkinter.CTkFont(family="Inter", size=10),
-                                              text_color="#FFFFFF", anchor="n")
-        self.label21.place(x=2.5, y=85)
-        self.label22 = customtkinter.CTkLabel(self.frame2, text="STAY FOCUSED ON THE ROAD",
-                                              font=customtkinter.CTkFont(family="Inter", size=5), text_color="#EAA623",
-                                              anchor="nw", justify="center")
-        self.label22.place(x=0, y=97.5)
-        img_qrcode = customtkinter.CTkImage(light_image=PIL.Image.open("images/qrcode.png"), size=(150, 150))
-        self.qrframe = customtkinter.CTkLabel(self, width=150, height=150, image=img_qrcode, text="")
-        self.qrframe.grid(row=1, column=1)
-        self.label3 = customtkinter.CTkLabel(self, text=text_instruction, width=150,
-                                             font=customtkinter.CTkFont(family="Inter", size=self.default_text_size),
-                                             text_color=self.default_text_color, justify=customtkinter.LEFT)
-        self.label3.grid(row=3, column=1, pady=30)
+        #
+        frame = customtkinter.CTkFrame(self, fg_color=self.default_bg_color)
+        frame.grid(row=0, column=1)
+        frame.grid_rowconfigure(0, weight=1)
+        frame.grid_rowconfigure(1, weight=0)
+        frame.grid_rowconfigure(2, weight=0)
+        logo = customtkinter.CTkImage(light_image=PIL.Image.open("images/logo.png"), size=(64, 82))
+        photo = customtkinter.CTkLabel(frame, image=logo, text="")
+        photo.grid(row=0, column=0, sticky="e", ipadx=15)
+        label1 = customtkinter.CTkLabel(frame, text="LIION ASSIST", height=14,
+                                        font=customtkinter.CTkFont(family="Inter", size=12),
+                                        text_color="#FFFFFF", anchor="n")
+        label1.grid(row=1, column=0)
+        label2 = customtkinter.CTkLabel(frame, text="STAY FOCUSED ON THE ROAD", height=10,
+                                        font=customtkinter.CTkFont(family="Inter", size=7), text_color="#EAA623",
+                                        anchor="n")
+        label2.grid(row=2, column=0)
 
-        self.bouton_suivant1 = customtkinter.CTkButton(self, text="Suivant", width=50, height=20,
-                                                       command=self.fenetre_suivante2)
-        self.bouton_suivant1.grid(row=4, column=1)
+        #
+        img_qrcode = customtkinter.CTkImage(light_image=PIL.Image.open("images/qrcode.png"), size=(150, 150))
+        qrframe = customtkinter.CTkLabel(self, width=150, height=150, image=img_qrcode, text="")
+        qrframe.grid(row=1, column=1)
+        label3 = customtkinter.CTkLabel(self, text=text_instruction, width=150,
+                                        font=customtkinter.CTkFont(family="Inter", size=self.default_text_size),
+                                        text_color=self.default_text_color, justify=customtkinter.LEFT)
+        label3.grid(row=3, column=1, pady=30)
+
+        #
+        bouton_suivant1 = customtkinter.CTkButton(self, text="Suivant", width=50, height=20,
+                                                  command=self.fenetre_suivante2)
+        bouton_suivant1.grid(row=4, column=1)
 
     def fenetre_suivante2(self):
         self.effacer()
-        self.bouton_suivant1.grid_forget()
-        self.grid_rowconfigure((0, 1), weight=1)
-        self.grid_columnconfigure((0, 1), weight=0)
-
-        # cadre des icones
-        self.barnav_frame = customtkinter.CTkFrame(self, width=self.default_icon_frame_width*7, # car, il y'a 7 icones
-                                                   height=self.default_icon_frame_height+50, fg_color="#FFFFFF")
-        self.barnav_frame.grid_rowconfigure(0, weight=1)
-        self.barnav_frame.grid_columnconfigure((0, 1, 2), weight=1)
-        self.barnav_frame.grid(row=3, column=1, pady=30, columnspan=2)
-
-        #
-        self.phone_frame = customtkinter.CTkFrame(self.barnav_frame, width=self.default_icon_frame_width, height=self.default_icon_frame_height, fg_color="#0F0332")
-        self.phone_frame.grid(row=0, column=1, padx=5)
-        img_phone = customtkinter.CTkImage(light_image=PIL.Image.open("images/phone.png"), size=(self.phone_sms_icon_dimen, self.phone_sms_icon_dimen))
-        self.image_phone = customtkinter.CTkButton(self.phone_frame, width=self.default_icon_dimen, height=self.default_icon_dimen,
-                                                   image=img_phone, text="", command=self.fenetre_suivante1, fg_color="#0F0332")
-        self.image_phone.place(x=0, y=0)
-        self.label_phone = customtkinter.CTkLabel(self.phone_frame, text="Telephone",
-                                                  font=customtkinter.CTkFont(family="Inter", size=self.default_text_size),
-                                                  text_color=self.default_text_color, anchor="n")
-        self.label_phone.place(x=7, y=self.phone_sms_icon_dimen+self.default_text_size)
-
-        #
-        self.gps_frame = customtkinter.CTkFrame(self.barnav_frame, width=self.default_icon_frame_width,
-                                                height=self.default_icon_frame_height, fg_color="#0F0332")
-        self.gps_frame.grid(row=0, column=2, padx=5)
-        img_gps = customtkinter.CTkImage(light_image=PIL.Image.open("images/gps.png"), size=(self.default_icon_dimen, self.default_icon_dimen))
-        self.image_gps = customtkinter.CTkButton(self.gps_frame, width=self.default_icon_dimen, height=self.default_icon_dimen,
-                                                 image=img_gps, text="", command=self.fenetre_suivante1, fg_color="#0F0332")
-        self.image_gps.place(x=0, y=0)
-        self.label_gps = customtkinter.CTkLabel(self.gps_frame, text="GPS",
-                                                font=customtkinter.CTkFont(family="Inter", size=self.default_text_size),
-                                                text_color=self.default_text_color, anchor="n")
-        self.label_gps.place(x=20, y=self.default_icon_dimen+self.default_text_size)
-
-        #
-        self.music_frame = customtkinter.CTkFrame(self.barnav_frame, width=self.default_icon_frame_width, height=self.default_icon_frame_height, fg_color="#0F0332")
-        self.music_frame.grid(row=0, column=3, padx=5)
-        img_music = customtkinter.CTkImage(light_image=PIL.Image.open("images/music.png"), size=(self.default_icon_dimen, self.default_icon_dimen))
-        self.image_music = customtkinter.CTkButton(self.music_frame, width=50, height=50, image=img_music, text="",
-                                                   command=self.fenetre_suivante1, fg_color="#0F0332")
-        self.image_music.place(x=0, y=0)
-        self.label_music = customtkinter.CTkLabel(self.music_frame, text="Musiques",
-                                                  font=customtkinter.CTkFont(family="Inter", size=self.default_text_size),
-                                                  text_color=self.default_text_color, anchor="n")
-        self.label_music.place(x=7, y=self.default_icon_dimen+self.default_text_size)
-
-        #
-        self.video_frame = customtkinter.CTkFrame(self.barnav_frame, width=self.default_icon_frame_width, height=self.default_icon_frame_height, fg_color="#0F0332")
-        self.video_frame.grid(row=0, column=4, padx=5)
-        img_video = customtkinter.CTkImage(light_image=PIL.Image.open("images/video.png"), size=(self.default_icon_dimen,self.default_icon_dimen))
-        self.image_video = customtkinter.CTkButton(self.video_frame, width=self.default_icon_dimen, height=self.default_icon_dimen,
-                                                   image=img_video, text="", command=self.fenetre_suivante1, fg_color="#0F0332")
-        self.image_video.place(x=0, y=0)
-        self.label_video = customtkinter.CTkLabel(self.video_frame, text="Videos",
-                                                  font=customtkinter.CTkFont(family="Inter", size=self.default_text_size),
-                                                  text_color=self.default_text_color, anchor="n")
-        self.label_video.place(x=14, y=self.default_icon_dimen+self.default_text_size)
-
-        #
-        self.settings_frame = customtkinter.CTkFrame(self.barnav_frame, width=self.default_icon_frame_width, height=self.default_icon_frame_height, fg_color="#0F0332")
-        self.settings_frame.grid(row=0, column=5, padx=5)
-        img_settings = customtkinter.CTkImage(light_image=PIL.Image.open("images/settings.png"), size=(self.default_icon_dimen, self.default_icon_dimen+5))
-        self.image_settings = customtkinter.CTkButton(self.settings_frame, width=self.phone_sms_icon_dimen, height=self.phone_sms_icon_dimen, image=img_settings,
-                                                      text="", command=self.fenetre_suivante1, fg_color="#0F0332")
-        self.image_settings.place(x=0, y=0)
-        self.label_settings = customtkinter.CTkLabel(self.settings_frame, text="Parametres",
-                                                     font=customtkinter.CTkFont(family="Inter", size=self.default_text_size),
-                                                     text_color=self.default_text_color, anchor="n")
-        self.label_settings.place(x=0, y=self.default_icon_dimen+self.default_text_size)
-
-        #
-        self.sms_frame = customtkinter.CTkFrame(self.barnav_frame, width=self.default_icon_frame_width, height=self.default_icon_frame_height, fg_color="#0F0332")
-        self.sms_frame.grid(row=0, column=6, padx=5)
-        img_sms = customtkinter.CTkImage(light_image=PIL.Image.open("images/sms.png"), size=(self.phone_sms_icon_dimen, self.phone_sms_icon_dimen))
-        self.image_sms = customtkinter.CTkButton(self.sms_frame, width=self.default_icon_dimen, height=self.default_icon_dimen, image=img_sms, text="",
-                                                 command=self.fenetre_suivante1, fg_color="#0F0332")
-        self.image_sms.place(x=0, y=0)
-        self.label_sms = customtkinter.CTkLabel(self.sms_frame, text="Messages",
-                                                font=customtkinter.CTkFont(family="Inter", size=self.default_text_size),
-                                                text_color=self.default_text_color, anchor="n")
-        self.label_sms.place(x=5, y=self.phone_sms_icon_dimen+self.default_text_size)
-
-        #
-        self.car_frame = customtkinter.CTkFrame(self.barnav_frame, width=self.default_icon_frame_width, height=self.default_icon_frame_height, fg_color="#0F0332")
-        self.car_frame.grid(row=0, column=7, padx=5)
-        img_car = customtkinter.CTkImage(light_image=PIL.Image.open("images/car.png"), size=(self.default_icon_dimen, self.default_icon_dimen))
-        self.image_car = customtkinter.CTkButton(self.car_frame, width=self.default_icon_dimen, height=self.default_icon_dimen, image=img_car, text="",
-                                                 command=self.fenetre_suivante1, fg_color="#0F0332")
-        self.image_car.place(x=0, y=0)
-        self.label_car = customtkinter.CTkLabel(self.car_frame, text="Voiture",
-                                                font=customtkinter.CTkFont(family="Inter", size=self.default_text_size),
-                                                text_color=self.default_text_color, anchor="n")
-        self.label_car.place(x=15, y=self.default_icon_dimen+self.default_text_size)
+        self.grid_rowconfigure(0, weight=1)
+        self.grid_rowconfigure(1, weight=1)
+        self.grid_rowconfigure(2, weight=1)
+        self.grid_columnconfigure(0, weight=0)
+        self.grid_columnconfigure(1, weight=1)
+        self.grid_columnconfigure(2, weight=1)
+        self.grid_columnconfigure(3, weight=1)
 
         # cadre barre verticale de taches
-        self.barinf_cadre = customtkinter.CTkFrame(self, corner_radius=0, fg_color="#39585B")
-        self.barinf_cadre.grid(row=0, column=0, rowspan=3)
-
-        self.barinf_frame = customtkinter.CTkFrame(self.barinf_cadre, width=self.home_icon_dimen+30, height=583.8,
-                                                   corner_radius=0, fg_color="#49585B")
-        self.barinf_frame.grid(row=0, column=0)
-        self.barinf_frame.grid_rowconfigure((0, 1, 2), weight=1)
-        self.barinf_frame.grid_columnconfigure(0, weight=1)
+        barinf_cadre = customtkinter.CTkFrame(self, corner_radius=0, fg_color="#39585B")
+        barinf_cadre.grid(row=0, column=0, rowspan=3, columnspan=1, sticky="nesw")
+        barinf_cadre.grid_rowconfigure(0, weight=0)
+        barinf_cadre.grid_rowconfigure(1, weight=1)
+        barinf_cadre.grid_rowconfigure(2, weight=0)
 
         #
-        self.home_frame = customtkinter.CTkFrame(self.barinf_frame, width=self.home_icon_dimen,
-                                                 height=self.home_icon_dimen, fg_color="#59585B")
-        self.home_frame.grid(row=0, column=0)
-
-
+        home_frame = customtkinter.CTkFrame(barinf_cadre, width=self.home_icon_dimen, fg_color=self.default_bar_color)
+        home_frame.grid(row=2, column=0, pady=20, sticky='nesw')
+        home_frame.grid_rowconfigure(0, weight=1)
         img_home = customtkinter.CTkImage(light_image=PIL.Image.open("images/home.png"), size=(self.home_icon_dimen,
                                                                                                self.home_icon_dimen))
-        self.image_home = customtkinter.CTkButton(self.home_frame, width=self.home_icon_dimen, height=self.home_icon_dimen,
-                                                  image=img_home, text="", command=self.quit, fg_color="#59585B")
-        self.image_home.grid(row=10, column=0)
+        image_home = customtkinter.CTkButton(home_frame, width=self.home_icon_dimen,
+                                             height=self.home_icon_dimen,
+                                             image=img_home, text="", command=self.quit,
+                                             fg_color=self.default_bar_color)
+        image_home.grid(row=0, column=0)
+
+        #
+        frametest3 = customtkinter.CTkFrame(self, fg_color=self.default_bg_color, width=100)
+        frametest3.grid(row=1, column=2)
+        frametest3.grid_rowconfigure(0, weight=1)
+        frametest3.grid_rowconfigure(1, weight=0)
+        frametest3.grid_rowconfigure(2, weight=0)
+        logo = customtkinter.CTkImage(light_image=PIL.Image.open("images/logo.png"), size=(92, 117))
+        photo = customtkinter.CTkLabel(frametest3, image=logo, text="")
+        photo.grid(row=0, column=0, sticky="e")
+        label1 = customtkinter.CTkLabel(frametest3, text="LIION ASSIST", height=14,
+                                        font=customtkinter.CTkFont(family="Inter", size=15),
+                                        text_color="#FFFFFF", anchor="n")
+        label1.grid(row=1, column=0)
+        label2 = customtkinter.CTkLabel(frametest3, text="STAY FOCUSED ON THE ROAD", height=10,
+                                        font=customtkinter.CTkFont(family="Inter", size=7), text_color="#EAA623",
+                                        anchor="n")
+        label2.grid(row=2, column=0)
+
+        #
+        frame_time = customtkinter.CTkFrame(barinf_cadre, fg_color=self.default_bar_color, width=self.home_icon_dimen,
+                                            height=30)
+        frame_time.grid(row=0, column=0)
+        frame_time.grid_rowconfigure(0, weight=1)
+        frame_time.grid_rowconfigure(1, weight=1)
+        heure = customtkinter.CTkLabel(frame_time, text="15:45", fg_color=self.default_bar_color,
+                                       font=customtkinter.CTkFont(family="Inter", size=self.default_text_size + 8),
+                                       text_color="#FFFFFF")
+        heure.grid(row=0, column=0)
+        date = customtkinter.CTkLabel(frame_time, text="18/02/2023", fg_color=self.default_bar_color,
+                                      font=customtkinter.CTkFont(family="Inter", size=self.default_text_size - 2),
+                                      text_color="#FFFFFF")
+        date.grid(row=1, column=0)
+
+        # cadre des icones
+        barnav_frame = customtkinter.CTkFrame(self, fg_color=self.default_bg_color)
+        barnav_frame.grid(row=2, column=1, rowspan=1, columnspan=3)
+
+        #
+        phone_icon = Icon(barnav_frame, "Telephone", self.default_text_size, "images/phone.png",
+                          self.default_icon_dimen, 0, 0)
+        phone_icon.creer()
+        gps_icon = Icon(barnav_frame, "GPS", self.default_text_size, "images/gps.png", self.default_icon_dimen, 0,
+                        1)
+        gps_icon.creer()
+        musique_icon = Icon(barnav_frame, "Music", self.default_text_size, "images/music.png",
+                            self.default_icon_dimen, 0, 2)
+        musique_icon.creer()
+        video_icon = Icon(barnav_frame, "Videos", self.default_text_size, "images/video.png",
+                          self.default_icon_dimen, 0, 3)
+        video_icon.creer()
+        settings_icon = Icon(barnav_frame, "Parametres", self.default_text_size, "images/settings.png",
+                             self.default_icon_dimen, 0, 4)
+        settings_icon.creer()
+        sms_icon = Icon(barnav_frame, "Messages", self.default_text_size, "images/sms.png",
+                        self.default_icon_dimen, 0, 5)
+        sms_icon.creer()
 
 
 if __name__ == "__main__":
