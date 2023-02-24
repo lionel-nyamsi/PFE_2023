@@ -4,8 +4,6 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
-import cm.pfe2023.li_ionassist.fragments.ConnectionFragment
-import cm.pfe2023.li_ionassist.fragments.RegistrationFragment
 
 class MainActivity : AppCompatActivity() {
 
