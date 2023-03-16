@@ -70,30 +70,56 @@ class PageIcon6(customtkinter.CTkFrame):
         title_frame.grid(row=0, column=1, rowspan=1, columnspan=2, sticky="nesw")
 
         #
-        right_frame = customtkinter.CTkScrollbar(self, corner_radius=0, fg_color="#FFFFFF")
+        right_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="#FFFFFF")
         right_frame.grid(row=1, column=1, rowspan=3, columnspan=1, sticky="nesw")
         right_frame.grid_columnconfigure(0, weight=1)
+        right_frame.grid_rowconfigure(0, weight=0)
+        right_frame.grid_rowconfigure(1, weight=1)
+        right_frame.grid_rowconfigure(2, weight=0)
 
         search_bar = customtkinter.CTkEntry(right_frame, height=30, corner_radius=15, fg_color="#D9D9D9",
                                             text_color="#4E4C4C", placeholder_text="Rechercher des conversations",
                                             border_color="#D9D9D9")
         search_bar.grid(row=0, column=0, padx=10, pady=15, sticky='ew')
-        dicussion1 = Discussion(right_frame, "papa", 9)
-        dicussion1.creer_right(1)
-        dicussion2 = Discussion(right_frame, "armel", 9)
-        dicussion2.creer_right(2)
-        dicussion3 = Discussion(right_frame, "M. farouche", 9)
-        dicussion3.creer_right(3)
-        dicussion4 = Discussion(right_frame, "M. farouche", 9)
-        dicussion4.creer_right(4)
-        dicussion5 = Discussion(right_frame, "M. farouche", 9)
-        dicussion5.creer_right(5)
-        dicussion6 = Discussion(right_frame, "M. farouche", 9)
-        dicussion6.creer_right(6)
-        dicussion7 = Discussion(right_frame, "M. farouche", 9)
-        dicussion7.creer_right(7)
-        dicussion8 = Discussion(right_frame, "M. farouche", 9)
-        dicussion8.creer_right(8)
+
+        discussion_box = customtkinter.CTkFrame(right_frame, fg_color="#FFFFFF")
+        discussion_box.grid(row=1, column=0, padx=5, sticky='nsew')
+        discussion_box.grid_rowconfigure(0, weight=1)
+        discussion_box.grid_columnconfigure(0, weight=1)
+        discussion_box.grid_columnconfigure(1, weight=0)
+
+        discussion_cadre = customtkinter.CTkCanvas(discussion_box, bg="#FFFFFF", highlightthickness=0, width=400)
+        cadre = customtkinter.CTkFrame(discussion_cadre, fg_color="#FFFFFF")
+        discussion_cadre.create_window((0, 0), window=cadre, anchor='center')
+        discussion_cadre.grid(row=0, column=0, sticky='nsew')
+        discussion_cadre.grid_columnconfigure(0, weight=1)
+
+        scrollbar = customtkinter.CTkScrollbar(discussion_box, command=discussion_cadre.yview)
+        scrollbar.grid(row=0, column=1, sticky='ns')
+
+        discussion_cadre.configure(yscrollcommand=scrollbar.set)
+
+        dicussion1 = Discussion(cadre, "papa", 9)
+        dicussion1.creer_right(0)
+        dicussion2 = Discussion(cadre, "armel", 9)
+        dicussion2.creer_right(1)
+        dicussion3 = Discussion(cadre, "M. farouche", 9)
+        dicussion3.creer_right(2)
+        dicussion4 = Discussion(cadre, "M. farouche", 9)
+        dicussion4.creer_right(3)
+        dicussion5 = Discussion(cadre, "M. farouche", 9)
+        dicussion5.creer_right(4)
+        dicussion6 = Discussion(cadre, "M. farouche", 9)
+        dicussion6.creer_right(5)
+        dicussion7 = Discussion(cadre, "M. farouche", 9)
+        dicussion7.creer_right(6)
+        dicussion8 = Discussion(cadre, "M. farouche", 9)
+        dicussion8.creer_right(7)
+
+        cadre.update_idletasks()
+        discussion_cadre.config(scrollregion=discussion_cadre.bbox("all"))
+        new_discuss = customtkinter.CTkButton(right_frame, width=50, height=40, text="Démarrer une discussion", fg_color="#6C0590")
+        new_discuss.grid(row=2, column=0, padx=10, pady=15, sticky='e')
 
         #
         global left_frame
@@ -117,7 +143,7 @@ class Discussion:
         msg_color = "#4E4C4C"
         container = customtkinter.CTkButton(self.parent, height=self.height, fg_color=theme_color, corner_radius=12,
                                             text="", hover_color=theme_color)
-        container.grid(row=ligne, column=0, padx=10, pady=5, sticky="ew")
+        container.grid(row=ligne, column=0, pady=5)
         container.grid_rowconfigure(0, weight=1)
         container.grid_rowconfigure(1, weight=0)
         container.grid_columnconfigure(0, weight=0)
@@ -172,3 +198,4 @@ class Discussion:
         entete.grid(row=0, column=0, columnspan=2, sticky="ew")
         entete_label = customtkinter.CTkLabel(entete, text=self.nom.title())
         entete_label.grid()
+

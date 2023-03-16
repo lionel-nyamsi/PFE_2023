@@ -24,7 +24,7 @@ class App(customtkinter.CTk):
         self.home_icon_dimen = 50 * self.scale
         self.default_icon_dimen = 70 * self.scale
 
-        self.geometry("835.8x583.8")
+        self.geometry("836x584")
         self.title("LIION ASSIST")
         self.minsize(int(836), int(584))
         self.maxsize(int(836), int(584))
