@@ -32,8 +32,8 @@
 
 
     <!-- Connection t the rapsberry pi -->
-    <string name="instructionText">Pour initialiser la connexion
-        avec la console, cliquer sur le bouton conexion ci-dessous.</string>
+    <string name="instructionText">Pour établir la connexion
+        avec la console, cliquer sur le bouton "conexion" ci-dessous.</string>
     <string name="connectionButton">Connexion</string>
 
 

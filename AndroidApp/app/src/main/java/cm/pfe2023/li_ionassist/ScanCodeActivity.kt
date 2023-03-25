@@ -53,7 +53,7 @@ class ScanCodeActivity : AppCompatActivity() {
                     Toast.makeText(this, "Vous devez autoriser l'accès à la caméra pour établir la connexion avec la console.", Toast.LENGTH_LONG)
                 }
                 else {
-                    Toast.makeText(this, "Connsexion...", Toast.LENGTH_SHORT)
+                    Toast.makeText(this, "Connexion...", Toast.LENGTH_SHORT)
                 }
             }
         }
