@@ -21,6 +21,7 @@ class App(customtkinter.CTk):
         self.default_bg_color = "#0F0332"
         self.default_bar_color = "#39585B"
         self.default_text_size = 12 * self.scale
+        self.title_text_size = 20 * self.scale
         self.home_icon_dimen = 50 * self.scale
         self.default_icon_dimen = 70 * self.scale
 
@@ -47,14 +48,20 @@ class App(customtkinter.CTk):
         self.frames = {}
 
         for F in (
-                startpage.StartPage, connectionpage.ConnectionPage, home_page.HomePage, page_icone1.PageIcon1, page_icone2.PageIcon2, page_icone3.PageIcon3, page_icone4.PageIcon4, page_icone5.PageIcon5, page_icone6.PageIcon6):
+                startpage.StartPage, connectionpage.ConnectionPage, home_page.HomePage, page_icone1.PageIcon1,
+                page_icone2.PageIcon2, page_icone3.PageIcon3, page_icone4.PageIcon4, page_icone5.PageIcon5,
+                page_icone6.PageIcon6):
             frame = F(container, self)
             self.frames[F] = frame
             frame.grid(row=0, column=0, sticky="nsew")
 
         # self.show_frame(StartPage)
         self.after(0, self.show_frame, startpage.StartPage)
-        self.after(2500, self.show_frame, connectionpage.ConnectionPage)
+        self.after(
+
+
+
+            500, self.show_frame, connectionpage.ConnectionPage)
 
     def show_frame(self, cont):
         frame = self.frames[cont]

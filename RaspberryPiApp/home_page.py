@@ -28,11 +28,12 @@ class Icon:
         frame.grid_rowconfigure(1)
         global a
         a = app
+
         program = """img = customtkinter.CTkImage(light_image=PIL.Image.open(self.source_image), size=(self.taille, 
         self.taille))\nimage = customtkinter.CTkButton(frame, width=self.taille, fg_color="#0F0332", 
         height=self.taille, image=img, text="", command= lambda: a.show_frame(page_icone""" + str(
-            Icon.nombre_cree) + """.PageIcon""" + str(Icon.nombre_cree) + \
-                  ")) \nimage.grid(row=0, column=0)"
+            Icon.nombre_cree) + """.PageIcon""" + str(Icon.nombre_cree) + ")) \nimage.grid(row=0, column=0)"
+
         exec(program)
         label = customtkinter.CTkLabel(frame, text=self.nom, fg_color="#0F0332",
                                        font=customtkinter.CTkFont(family="Inter", size=self.police),
