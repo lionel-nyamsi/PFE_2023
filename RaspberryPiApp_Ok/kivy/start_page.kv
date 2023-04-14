@@ -1,0 +1,32 @@
+#:import get_color_from_hex kivy.utils.get_color_from_hex
+
+
+<StartPage>:
+
+    md_bg_color: get_color_from_hex("#0F0332")
+
+    MDBoxLayout:
+
+        orientation: 'vertical'
+        adaptive_height: False
+        size_hint: None, None
+        pos_hint: {"center_x": 0.5,"center_y": 0.5}
+        size: 200, 200
+        Image:
+            source: 'images/logo.png'
+            pos_hint: {"center_x": 0.565,"center_y": 0.5}
+        MDLabel:
+            halign: 'center'
+            size_hint_y: None
+            size: self.texture_size
+            text: 'LION ASSIST'
+            font_size: 18
+            color: get_color_from_hex("#FFFFFF")
+        MDLabel:
+            halign: 'center'
+            size_hint_y: None
+            size: self.texture_size
+            text: 'Stay focused on the road'
+            font_size: 13
+            color: get_color_from_hex("#EAA623")
+

@@ -1,0 +1,91 @@
+#:import get_color_from_hex kivy.utils.get_color_from_hex
+
+<MessagePage>:
+    MDBoxLayout:
+        md_bg_color: app.default_bg_color
+        orientation: 'horizontal'
+
+        MDFloatLayout:
+            md_bg_color: 0, 0, 0, 0.5
+            size_hint_x: None
+            size: 75, 0
+            MDIconButton:
+                icon: "images/home.png"
+                icon_size: 50
+                pos_hint: {"center_x": 0.5, "y": 0}
+                on_press: app.change_screen('home')
+            MDBoxLayout:
+                orientation: "vertical"
+                size_hint: None, None
+                size: 75, 50
+                pos_hint: {"center_x": 0.5, "top": 1}
+                MDLabel:
+                    halign: 'center'
+                    text: '15:45'
+                    font_size: 18
+                    color: get_color_from_hex("#FFFFFF")
+                MDLabel:
+                    halign: 'center'
+                    text: '12/12/2022'
+                    font_size: 12
+                    color: get_color_from_hex("#FFFFFF")
+
+        MDBoxLayout:
+            orientation: 'vertical'
+            MDBoxLayout:
+                orientation: 'vertical'
+                md_bg_color: get_color_from_hex("#C7C7C7")
+                size_hint_y: None
+                size: 0, 30
+                MDLabel:
+                    id: b
+                    text: 'Messages'
+                    halign: 'left'
+            MDBoxLayout:
+                orientation: 'horizontal'
+                MDBoxLayout:
+                    orientation: 'vertical'
+                    md_bg_color: get_color_from_hex("#FFFFFF")
+                    MDFloatLayout:
+                        orientation: 'vertical'
+                        size_hint: 0.9, None
+                        md_bg_color: get_color_from_hex("#FF13800")
+                        size: 0, 75
+                        MDBoxLayout:
+                            md_bg_color: get_color_from_hex("#C7C7C7")
+                            radius: 15
+                            size_hint_y: None
+                            size: 0, 30
+                            pos_hint: {'center_x': 0.55, 'center_y': 0.5}
+                            padding: 10, 0, 10, 0
+                            MDLabel:
+                                opacity: 0.5
+                                text: 'Rechercher des messages'
+                    MDFloatLayout:
+                        ScrollView:
+                            pos_hint: {'center_x': 0.5, 'top': 1}
+                            do_scroll_y: True
+                            effect_cls: 'ScrollEffect'
+                            bar_width: 0
+                            scroll_type: ['content']
+                            MDBoxLayout:
+                                id: chatlist
+                                orientation: 'vertical'
+                                size_hint_y: None
+                                size: 0, self.minimum_height
+                        MDFloatingActionButton:
+                            pos_hint: {'center_x': 0.8, 'y': 0.08}
+                            icon: 'comment-multiple-outline'
+                            size_hint: None, None
+                            type: 'standard'
+
+                MDBoxLayout:
+                    orientation: 'vertical'
+                    md_bg_color: get_color_from_hex("#6C0590")
+                    size_hint_x: None
+                    size: 3, 0
+                MDBoxLayout:
+                    id: chat
+                    orientation: 'vertical'
+                    md_bg_color: get_color_from_hex("#FFFFFF")
+

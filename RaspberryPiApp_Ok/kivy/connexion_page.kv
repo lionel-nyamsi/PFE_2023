@@ -1,0 +1,59 @@
+#:import get_color_from_hex kivy.utils.get_color_from_hex
+
+
+<ConnexionPage>:
+
+    md_bg_color: app.default_bg_color
+    MDBoxLayout:
+        orientation: 'vertical'
+        MDBoxLayout:
+            opacity: 0.5
+            size_hint: 1, 0.35
+            MDBoxLayout:
+                size_hint: 1, 0.9
+                orientation: 'vertical'
+                pos_hint: {"center_x": 0.5,"center_y": 0.5}
+                Image:
+                    source: 'images/logo.png'
+                    pos_hint: {"center_x": 0.505,"center_y": 0.5}
+                MDLabel:
+                    halign: 'center'
+                    size_hint_y: None
+                    size: self.texture_size
+                    text: 'LION ASSIST'
+                    font_size: 9
+                    color: get_color_from_hex("#FFFFFF")
+                MDLabel:
+                    halign: 'center'
+                    size_hint_y: None
+                    size: self.texture_size
+                    text: 'Stay focused on the road'
+                    font_size: 6
+                    color: get_color_from_hex("#EAA623")
+        MDBoxLayout:
+            Image:
+                source: 'images/qrcode.png'
+                size_hint: 0.75, 0.75
+                pos_hint: {"center_x": 0.5,"center_y": 0.55}
+        MDBoxLayout:
+            size_hint_y: 0.6
+            orientation: 'vertical'
+            MDLabel:
+                text: root.text_instructions[0]
+                size_hint: 0.7, 0.2
+                font_size: 12
+                color: get_color_from_hex("#FFFFFF")
+                pos_hint: {"center_x": .5,"center_y": .5}
+            MDLabel:
+                text: root.text_instruction
+                size_hint: 0.6, 1
+                font_size: 12
+                color: get_color_from_hex("#FFFFFF")
+                pos_hint: {"center_x": .51,"center_y": .5}
+        MDBoxLayout:
+            orientation: 'vertical'
+            size: 20, 20
+            size_hint: None, None
+            MDIconButton:
+                icon: 'twitter'
+                on_press: app.change_screen('home')

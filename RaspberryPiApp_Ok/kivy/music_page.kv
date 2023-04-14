@@ -1,0 +1,34 @@
+#:import get_color_from_hex kivy.utils.get_color_from_hex
+
+<MusicPage>:
+    MDBoxLayout:
+        md_bg_color: app.default_bg_color
+        orientation: 'horizontal'
+
+        MDFloatLayout:
+            md_bg_color: 1, 1, 1, 0.3
+            size_hint_x: None
+            size: 75, 0
+            MDIconButton:
+                icon: "images/home.png"
+                icon_size: 50
+                pos_hint: {"center_x": 0.5, "y": 0}
+                on_press: app.stop()
+            MDBoxLayout:
+                orientation: "vertical"
+                size_hint: None, None
+                size: 75, 50
+                pos_hint: {"center_x": 0.5, "top": 1}
+                MDLabel:
+                    halign: 'center'
+                    text: '15:45'
+                    font_size: 18
+                    color: get_color_from_hex("#FFFFFF")
+                MDLabel:
+                    halign: 'center'
+                    text: '12/12/2022'
+                    font_size: 12
+                    color: get_color_from_hex("#FFFFFF")
+
+        MDFloatLayout:
+

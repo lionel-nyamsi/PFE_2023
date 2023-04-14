@@ -1,0 +1,156 @@
+#:import get_color_from_hex kivy.utils.get_color_from_hex
+
+<HomePage>:
+    MDBoxLayout:
+        md_bg_color: app.default_bg_color
+        orientation: 'horizontal'
+
+        MDFloatLayout:
+            md_bg_color: 0, 0, 0, 0.3
+            size_hint_x: None
+            size: 75, 0
+            MDIconButton:
+                icon: "images/home.png"
+                icon_size: 50
+                pos_hint: {"center_x": 0.5, "y": 0}
+                on_press: app.stop()
+            MDBoxLayout:
+                orientation: "vertical"
+                size_hint: None, None
+                size: 75, 50
+                pos_hint: {"center_x": 0.5, "top": 1}
+                MDLabel:
+                    halign: 'center'
+                    text: '15:45'
+                    font_size: 18
+                    color: get_color_from_hex("#FFFFFF")
+                MDLabel:
+                    halign: 'center'
+                    text: '12/12/2022'
+                    font_size: 12
+                    color: get_color_from_hex("#FFFFFF")
+
+        MDFloatLayout:
+            MDBoxLayout:
+                md_bg_color: 1, 1, 1, 0.1
+                orientation: 'horizontal'
+                size_hint: 0.85, None
+                size: 0, 120
+                radius: 20
+                pos_hint: {'center_x': 0.5, 'y': 0.08}
+                MDBoxLayout:
+                    orientation: 'vertical'
+                    size_hint_y: None
+                    size: 100, 100
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                    MDIconButton:
+                        icon: 'images/phone.png'
+                        size_hint: None, None
+                        icon_size: '70sp'
+                        padding: [25, 10, 10, 10]
+                        on_press: app.change_screen('phone')
+                    MDLabel:
+                        text: 'Telephone'
+                        halign: 'center'
+                        color: 1, 1, 1, 1
+                MDBoxLayout:
+                    orientation: 'vertical'
+                    size_hint_y: None
+                    size: 100, 100
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                    MDIconButton:
+                        icon: 'images/gps.png'
+                        size_hint: None, None
+                        icon_size: '70sp'
+                        padding: [30, 10, 10, 10]
+                        on_press: app.change_screen('gps')
+                    MDLabel:
+                        text: 'GPS'
+                        halign: 'center'
+                        color: 1, 1, 1, 1
+                MDBoxLayout:
+                    orientation: 'vertical'
+                    size_hint_y: None
+                    size: 100, 100
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                    MDIconButton:
+                        icon: 'images/music.png'
+                        size_hint: None, None
+                        icon_size: '70sp'
+                        padding: [25, 10, 10, 10]
+                        on_press: app.change_screen('music')
+                    MDLabel:
+                        text: 'Musique'
+                        halign: 'center'
+                        color: 1, 1, 1, 1
+                MDBoxLayout:
+                    orientation: 'vertical'
+                    size_hint_y: None
+                    size: 100, 100
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                    MDIconButton:
+                        icon: 'images/video.png'
+                        size_hint: None, None
+                        icon_size: '70sp'
+                        padding: [23, 10, 10, 10]
+                        on_press: app.change_screen('video')
+                    MDLabel:
+                        text: 'Videos'
+                        halign: 'center'
+                        color: 1, 1, 1, 1
+                MDBoxLayout:
+                    orientation: 'vertical'
+                    size_hint_y: None
+                    size: 100, 100
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                    MDIconButton:
+                        icon: 'images/settings.png'
+                        size_hint: None, None
+                        icon_size: '70sp'
+                        padding: [23, 10, 10, 10]
+                        on_press: app.change_screen('settings')
+                    MDLabel:
+                        text: 'Parametres'
+                        halign: 'center'
+                        color: 1, 1, 1, 1
+                MDBoxLayout:
+                    orientation: 'vertical'
+                    size_hint_y: None
+                    size: 100, 100
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                    MDIconButton:
+                        icon: 'images/sms.png'
+                        size_hint: None, None
+                        icon_size: '70sp'
+                        padding: [25, 10, 10, 10]
+                        on_press: app.change_screen('message')
+                    MDLabel:
+                        text: 'Messages'
+                        halign: 'center'
+                        color: 1, 1, 1, 1
+
+            MDBoxLayout:
+                opacity: 0.5
+                size_hint: 1, 0.35
+                pos_hint: {'center_x': 0.5, 'y': 0.5}
+                MDBoxLayout:
+                    size_hint: 1, 0.9
+                    orientation: 'vertical'
+                    pos_hint: {"center_x": 0.5,"center_y": 0.5}
+                    Image:
+                        source: 'images/logo.png'
+                        pos_hint: {"center_x": 0.52,"center_y": 0.5}
+                    MDLabel:
+                        halign: 'center'
+                        size_hint_y: None
+                        size: self.texture_size
+                        text: 'LION ASSIST'
+                        font_size: 9
+                        color: get_color_from_hex("#FFFFFF")
+                    MDLabel:
+                        halign: 'center'
+                        size_hint_y: None
+                        size: self.texture_size
+                        text: 'Stay focused on the road'
+                        font_size: 10
+                        color: get_color_from_hex("#EAA623")
