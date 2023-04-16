@@ -6,6 +6,15 @@ from kivy.core.window import Window
 from kivy.lang.builder import Builder
 import qrcode
 
+import discord
+from discord.ext import tasks
+
+from src.vocal_command import read_vocal_data, text_to_voicenote
+
+'''
+@tasks.loop(seconds = 3)
+async def vocal():
+    read_vocal_data()'''
 
 class StartPage(MDScreen):
     pass
@@ -94,6 +103,7 @@ class App(MDApp):
         return self.sm
 
     def on_start(self):
+        text_to_voicenote("Bienvenue sur Liion Assist !")
         Clock.schedule_once(self.toscreen1, 3)
 
     def load_discussion(self):
@@ -127,3 +137,4 @@ class App(MDApp):
 
 if __name__ == "__main__":
     App().run()
+    text_to_voicenote("Au revoir et à la prochaine !")
