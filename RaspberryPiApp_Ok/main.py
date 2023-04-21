@@ -78,6 +78,9 @@ class App(MDApp):
     default_bg_color = "#0F0332"
     default_bar_color = "#39585B"
 
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
     def build(self):
         Window.size = [836, 584]
         self.title = "LIION ASSIST"
