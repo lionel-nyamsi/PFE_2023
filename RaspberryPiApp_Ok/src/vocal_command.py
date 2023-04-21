@@ -8,7 +8,7 @@ import pyttsx3  # Bibliotèque pour transformer le texte en message vocal
 
 
 q = queue.Queue()
-
+donnees_vocales = ['0']
 
 def int_or_str(text):
     """Helper function for argument parsing."""
@@ -74,12 +74,16 @@ def read_vocal_data():
             print("#" * 80)
 
             rec = KaldiRecognizer(model, args.samplerate)
+            start = 0
             while True:
                 data = q.get()
+                start += 0.1
                 if rec.AcceptWaveform(data):
                     print(rec.Result())
+                    donnees_vocales.append(rec.Result())
                 else:
                     print(rec.PartialResult())
+                    donnees_vocales.append(rec.PartialResult())
                 if dump_fn is not None:
                     dump_fn.write(data)
 

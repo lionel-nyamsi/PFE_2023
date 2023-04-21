@@ -5,16 +5,20 @@ from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.lang.builder import Builder
 import qrcode
+import threading
 
 import discord
 from discord.ext import tasks
 
-from src.vocal_command import read_vocal_data, text_to_voicenote
+import src.vocal_command
 
-'''
-@tasks.loop(seconds = 3)
-async def vocal():
-    read_vocal_data()'''
+
+def back_ground():
+    src.vocal_command.read_vocal_data()
+
+
+bg_task = threading.Thread(target=back_ground, daemon=True)
+
 
 class StartPage(MDScreen):
     pass
@@ -77,9 +81,7 @@ class App(MDApp):
     default_text_color = "#C9C5C5"
     default_bg_color = "#0F0332"
     default_bar_color = "#39585B"
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    a = src.vocal_command.donnees_vocales
 
     def build(self):
         Window.size = [836, 584]
@@ -106,7 +108,7 @@ class App(MDApp):
         return self.sm
 
     def on_start(self):
-        text_to_voicenote("Bienvenue sur Liion Assist !")
+        src.vocal_command.text_to_voicenote("Bienvenue sur Liion Assist !")
         Clock.schedule_once(self.toscreen1, 3)
 
     def load_discussion(self):
@@ -122,7 +124,7 @@ class App(MDApp):
 
     def load_chatlist(self):
         w = []
-        for i in range(50):
+        for i in range(15):
             w.append(Builder.load_file('kivy/discussion_card.kv'))
             self.sm.screens[4].ids.chatlist.add_widget(w[i])
 
@@ -139,5 +141,7 @@ class App(MDApp):
 
 
 if __name__ == "__main__":
-    App().run()
-    text_to_voicenote("Au revoir et à la prochaine !")
+    app = App()
+    bg_task.start()
+    main_task = threading.Thread(target=App().run())
+    src.vocal_command.text_to_voicenote("Au revoir, à la prochaine !")
