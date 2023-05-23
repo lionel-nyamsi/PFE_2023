@@ -2,13 +2,15 @@ import argparse
 import queue
 import sys
 import sounddevice as sd
+import pyttsx3
+import json
+
+
 from vosk import Model, KaldiRecognizer
-
-import pyttsx3  # Bibliotèque pour transformer le texte en message vocal
-
 
 q = queue.Queue()
 donnees_vocales = ['0']
+
 
 def int_or_str(text):
     """Helper function for argument parsing."""
@@ -51,6 +53,7 @@ args = parser.parse_args(remaining)
 
 
 def read_vocal_data():
+
     try:
         if args.samplerate is None:
             device_info = sd.query_devices(args.device, "input")
@@ -74,16 +77,13 @@ def read_vocal_data():
             print("#" * 80)
 
             rec = KaldiRecognizer(model, args.samplerate)
-            start = 0
+
             while True:
                 data = q.get()
-                start += 0.1
                 if rec.AcceptWaveform(data):
-                    print(rec.Result())
-                    donnees_vocales.append(rec.Result())
-                else:
-                    print(rec.PartialResult())
-                    donnees_vocales.append(rec.PartialResult())
+                    result = json.loads(rec.FinalResult())
+                    print(result['text'])
+                    donnees_vocales.append(result['text'])
                 if dump_fn is not None:
                     dump_fn.write(data)
 

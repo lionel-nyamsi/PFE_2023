@@ -1,2 +1,29 @@
-MDLabel:
-    text: app.a
+#:import get_color_from_hex kivy.utils.get_color_from_hex
+
+MDBoxLayout:
+    orientation: 'vertical'
+    MDBoxLayout:
+        md_bg_color: get_color_from_hex("#6C0590")
+        size_hint_y: None
+        size: 0, 40
+        MDLabel:
+            text: 'Papa'
+            color: get_color_from_hex("#FFFFFF")
+            pos_hint: {"x": 0.5, "center_y": 0.5}
+    MDBoxLayout:
+        size_hint: 0.95, 1
+        padding: 0, 10, 0, 0
+        pos_hint: {"center_x": 0.5, "top": 1}
+        ScrollView:
+            pos_hint: {'center_x': 0.5, 'top': 1}
+            do_scroll_y: True
+            effect_cls: 'ScrollEffect'
+            bar_width: 0
+            scroll_type: ['content']
+
+            MDBoxLayout:
+                orientation: 'vertical'
+                id: messages
+                size_hint_y: None
+                size: 0, self.minimum_height
+
