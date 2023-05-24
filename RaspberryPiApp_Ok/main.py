@@ -2,8 +2,7 @@ from kivymd.app import MDApp
 from kivy.uix.screenmanager import ScreenManager, SlideTransition
 from kivymd.uix.screen import MDScreen
 from kivymd.uix.label import MDLabel
-from kivymd.uix.boxlayout import MDBoxLayout
-from kivymd.uix.card import MDCard
+from kivymd.uix.floatlayout import MDFloatLayout
 from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.lang.builder import Builder
@@ -11,8 +10,8 @@ import qrcode
 import threading
 import json
 
-import discord
-from discord.ext import tasks
+# import discord
+# from discord.ext import tasks
 
 import src.vocal_command
 
@@ -81,6 +80,10 @@ class MessagePage(MDScreen):
     pass
 
 
+def time_sms(m):
+    return m[1]
+
+
 class App(MDApp):
     default_text_color = "#C9C5C5"
     default_bg_color = "#0F0332"
@@ -110,44 +113,66 @@ class App(MDApp):
             self.sm.add_widget(screen)
         self.load_chatlist()
         bg_task.start()
+        self.order_message(self.messages['papa'])
 
         return self.sm
 
     def on_start(self):
         src.vocal_command.text_to_voicenote("Bienvenue sur Liion Assist !")
-        Clock.schedule_once(self.toscreen1, 3)
+        self.toscreen1()
         Clock.schedule_interval(self.check_instruction, 0.01)
+
+    def order_message(self, contact, *args):
+        order = []
+        a = 0
+        for key in contact:
+            for i in range(len(contact[key])):
+                order.append(contact[key][i])
+                order[a].append(key)
+                a += 1
+        return sorted(order, key=time_sms)
 
     def load_discussion(self):
         w = Builder.load_file('kivy/chat_container.kv')
         self.sm.screens[4].ids.chat.clear_widgets()
         self.sm.screens[4].ids.chat.add_widget(w)
-        for i in range(max(len(self.messages['sent']), len(self.messages['received']))):
-            t1 = MDLabel(text=self.messages['sent'][i], font_size="14")
-            ar = MDBoxLayout(md_bg_color="#C7C7C7", size_hint={0.5, None}, size={0, 40}, radius=10, pos_hint={"x": 0, "top": 1})
-            ar.add_widget(t1)
-            t2 = MDLabel(text=self.messages['received'][i], font_size="14", halign='right')
-            br = MDBoxLayout(md_bg_color="#C7C7C7", size_hint={0.5, None}, size={0, 40}, radius=10, pos_hint={"right": 1, "top": 1})
-            br.add_widget(t2)
-            a = MDCard(size_hint={1, None}, size={0, 50}, pos_hint={"center_x": 0.5, "top": 1})
-            b = MDCard(size_hint={1, None}, size={0, 50}, pos_hint={"center_x": 0.5, "top": 1})
-            a.add_widget(ar)
-            b.add_widget(br)
+        text = self.order_message(self.messages['papa'])
+        for i in range(len(text)):
+            if len(text[i][0]) <= 500:
+                taille = 10*len(text[i][0])+10
+            else:
+                taille = 500
+            t1 = MDLabel(text="  "+text[i][0]+"  ", font_size=14)
 
+            if text[i][2] == 'sent':
+                pos = """ "x": 0 """
+            else:
+                pos = """ "right": 1 """
+            ar = Builder.load_string("""
+#:import get_color_from_hex kivy.utils.get_color_from_hex
+MDBoxLayout:
+    orientation: 'vertical'
+    md_bg_color: get_color_from_hex("#C7C7C7")
+    size_hint: None, None
+    size: """ + str(taille) + """, 40
+    radius: 10
+    pos_hint: {""" + pos + """, "top": 1}""")
+            ar.add_widget(t1)
+            a = MDFloatLayout(size_hint={1, None}, size={0, 50}, pos_hint={"center_x": 0.5, "top": 1})
+            a.add_widget(ar)
             w.ids.messages.add_widget(a)
-            w.ids.messages.add_widget(b)
 
     def change_screen(self, screen):
         self.sm.current = screen
 
     def toscreen1(self, *args):
-        self.sm.current = 'CONNECTION'
+        self.sm.current = 'LIION'
+        Clock.schedule_once(lambda x: self.change_screen("CONNECTION"), 10)
 
     def load_chatlist(self):
-        w = []
-        for i in range(5):
-            w.append(Builder.load_file('kivy/discussion_card.kv'))
-            self.sm.screens[4].ids.chatlist.add_widget(w[i])
+        for contact in self.messages:
+            w = Builder.load_file('kivy/discussion_card.kv')
+            self.sm.screens[4].ids.chatlist.add_widget(w)
 
     def load_all_kv_files(self, **kwargs):
         Builder.load_file('kivy/start_page.kv')
