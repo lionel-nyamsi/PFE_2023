@@ -6,10 +6,7 @@ MDBoxLayout:
         md_bg_color: get_color_from_hex("#6C0590")
         size_hint_y: None
         size: 0, 40
-        MDLabel:
-            text: 'Papa'
-            color: get_color_from_hex("#FFFFFF")
-            pos_hint: {"x": 0.5, "center_y": 0.5}
+        id: entete
     MDBoxLayout:
         size_hint: 0.95, 1
         padding: 0, 10, 0, 0
@@ -20,6 +17,7 @@ MDBoxLayout:
             effect_cls: 'ScrollEffect'
             bar_width: 0
             scroll_type: ['content']
+            scroll_y: 0
 
             MDBoxLayout:
                 orientation: 'vertical'

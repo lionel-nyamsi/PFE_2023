@@ -1,3 +1,5 @@
+import time
+
 from kivymd.app import MDApp
 from kivy.uix.screenmanager import ScreenManager, SlideTransition
 from kivymd.uix.screen import MDScreen
@@ -88,9 +90,10 @@ class App(MDApp):
     default_text_color = "#C9C5C5"
     default_bg_color = "#0F0332"
     default_bar_color = "#39585B"
+    con = ''
     c = src.vocal_command.donnees_vocales
     sm = ScreenManager(transition=SlideTransition())
-    with open("donnee_test.json") as json_file:
+    with open("donnee_sms.json") as json_file:
         messages = json.load(json_file)
 
     def build(self):
@@ -113,7 +116,6 @@ class App(MDApp):
             self.sm.add_widget(screen)
         self.load_chatlist()
         bg_task.start()
-        self.order_message(self.messages['papa'])
 
         return self.sm
 
@@ -132,33 +134,44 @@ class App(MDApp):
                 a += 1
         return sorted(order, key=time_sms)
 
-    def load_discussion(self):
+    def load_discussion(self, contact, *args):
         w = Builder.load_file('kivy/chat_container.kv')
         self.sm.screens[4].ids.chat.clear_widgets()
         self.sm.screens[4].ids.chat.add_widget(w)
-        text = self.order_message(self.messages['papa'])
+        text = self.order_message(self.messages[contact])
+        e = Builder.load_string("""
+#:import get_color_from_hex kivy.utils.get_color_from_hex
+MDLabel:
+    text: '   """ + contact.capitalize() + """'
+    font_size: 20
+    color: get_color_from_hex("#FFFFFF")
+    pos_hint: {"x": 0.5, "center_y": 0.5}"""
+                                )
+        w.ids.entete.add_widget(e)
         for i in range(len(text)):
-            if len(text[i][0]) <= 500:
-                taille = 10*len(text[i][0])+10
+            if len(text[i][0]) <= 30:
+                taille = 10 * len(text[i][0]) + 10
             else:
-                taille = 500
-            t1 = MDLabel(text="  "+text[i][0]+"  ", font_size=14)
+                taille = 300
+            hauteur = 10 + 18 * (1 + int(len(text[i][0])) / 30)
+            t1 = MDLabel(text="" + text[i][0] + "  ", font_size=14)
 
             if text[i][2] == 'sent':
-                pos = """ "x": 0 """
-            else:
                 pos = """ "right": 1 """
+            else:
+                pos = """ "x": 0 """
             ar = Builder.load_string("""
 #:import get_color_from_hex kivy.utils.get_color_from_hex
 MDBoxLayout:
     orientation: 'vertical'
     md_bg_color: get_color_from_hex("#C7C7C7")
     size_hint: None, None
-    size: """ + str(taille) + """, 40
+    size: """ + str(taille) + """, """ + str(hauteur) + """
     radius: 10
+    padding: 7, 0, 7, 0
     pos_hint: {""" + pos + """, "top": 1}""")
             ar.add_widget(t1)
-            a = MDFloatLayout(size_hint={1, None}, size={0, 50}, pos_hint={"center_x": 0.5, "top": 1})
+            a = MDFloatLayout(size_hint={1, None}, size={0, hauteur + 10}, pos_hint={"center_x": 0.5, "top": 1})
             a.add_widget(ar)
             w.ids.messages.add_widget(a)
 
@@ -170,9 +183,83 @@ MDBoxLayout:
         Clock.schedule_once(lambda x: self.change_screen("CONNECTION"), 10)
 
     def load_chatlist(self):
-        for contact in self.messages:
+        # self.send_new_sms("jdkf", 202305251639, "mambou")
+        # self.receive_new_sms("ça veut dire quoi?", 202305251645, "mambou")
+        # self.receive_new_sms("yo", 202305251645, "jean")
+        for contact in self.messages.keys():
+            card = Builder.load_string("""
+MDCard:
+    on_press: app.load_discussion('""" + contact + """')
+    size_hint: 0.9, None
+    height: 60
+    pos_hint: {'center_x': 0.5}
+    md_bg_color: 1, 1, 1, 0""")
             w = Builder.load_file('kivy/discussion_card.kv')
-            self.sm.screens[4].ids.chatlist.add_widget(w)
+            self.sm.screens[4].ids.chatlist.add_widget(card)
+            card.add_widget(w)
+            text = self.order_message(self.messages[contact])
+            if not text:
+                date = ''
+                last_sms = ''
+            else:
+                date = str(text[-1][1])[:4] + '/' + str(text[-1][1])[4:6] + '/' + str(text[-1][1])[6:8] + '  ' + str(
+                    text[-1][1])[8:10] + 'h' + str(text[-1][1])[10:]
+                last_sms = text[-1][0]
+            a = Builder.load_string("""
+MDLabel:
+    id: contact
+    text: '""" + contact.capitalize() + """'
+    anchor: 'left'
+    font_size: 20"""
+                                    )
+            b = Builder.load_string("""
+MDLabel:
+    text: '""" + date + """'
+    anchor: 'right'
+    font_size: 10"""
+                                    )
+            c = Builder.load_string("""
+#:import get_color_from_hex kivy.utils.get_color_from_hex
+MDLabel:
+    text: '""" + last_sms + """'
+    anchor: 'left'
+    font_size: 12
+    color: get_color_from_hex("#4E4C4C")"""
+                                    )
+            d = Builder.load_string("""
+MDLabel:
+    text: '""" + contact[0].upper() + """'
+    anchor: 'right'
+    font_size: 22
+    valign: 'middle'
+    halign: 'center'"""
+                                    )
+            w.ids.discus_inf.add_widget(a)
+            w.ids.discus_inf.add_widget(b)
+            w.ids.last_sms.add_widget(c)
+            w.ids.initial.add_widget(d)
+
+    def add_contact(self, nom, *args):
+        mess = self.messages
+        mess.update({nom: {'sent': [], 'received': []}})
+        with open("donnee_sms.json", 'w') as json_file:
+            json.dump(mess, json_file, indent=4)
+
+    def send_new_sms(self, sms, date, contact, *args):
+        mess = self.messages
+        if contact not in mess.keys():
+            self.add_contact(contact)
+        mess[contact]['sent'].append([sms, date])
+        with open("donnee_sms.json", 'w') as json_file:
+            json.dump(mess, json_file, indent=4)
+
+    def receive_new_sms(self, sms, date, contact, *args):
+        mess = self.messages
+        if contact not in mess.keys():
+            self.add_contact(contact)
+        mess[contact]['received'].append([sms, date])
+        with open("donnee_sms.json", 'w') as json_file:
+            json.dump(mess, json_file, indent=4)
 
     def load_all_kv_files(self, **kwargs):
         Builder.load_file('kivy/start_page.kv')
@@ -190,8 +277,12 @@ MDBoxLayout:
             self.change_screen('home')
         if src.vocal_command.donnees_vocales[-1] == "message":
             self.change_screen('message')
-        if src.vocal_command.donnees_vocales[-1] == "affiche discussion":
-            self.load_discussion()
+        if "affiche discussion" in src.vocal_command.donnees_vocales[-1]:
+            if src.vocal_command.donnees_vocales[-1] == "affiche discussion":
+                src.vocal_command.text_to_voicenote("repetez")
+                time.sleep(1)
+            else:
+                self.load_discussion(src.vocal_command.donnees_vocales[-1].split(" ")[2])
         if src.vocal_command.donnees_vocales[-1] == "fin":
             self.stop()
 
@@ -199,6 +290,5 @@ MDBoxLayout:
 app = App()
 
 if __name__ == "__main__":
-
     app.run()
     src.vocal_command.text_to_voicenote("Au revoir, à la prochaine !")
