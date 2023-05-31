@@ -75,13 +75,12 @@
                                 MDTextField:
                                     hint_text: "Rechercher des contacts"
                                     mode: "round" 
+                                    pos_hint: {'center_x': 0.5, 'center_y': 0.95}
                                     size_hint_x: 0.94
-                                    pos_hint: {'center_x': 0.5}
                                     
                                 MDLabel:
-                                    id: "section_title"
-                                    text: "Journal des appels"
-                                    font_size: '22'
+                                    text: "Contacts"
+                                    font_size: '18'
                                     size_hint_y: None
                                     size: 0, 30
                                     pos_hint: {'x': 0.03, 'center_y': 0.5}
@@ -94,17 +93,19 @@
                                         bar_width: 0
                                         scroll_type: ['content']
                                         MDBoxLayout:
-                                            id: contacts_list
+                                            id: contact_list
                                             orientation: 'vertical'
                                             size_hint_y: None
                                             size: 0, self.minimum_height
                                     MDFloatingActionButton:
-                                        pos_hint: {'center_x': 0.85, 'y': 0.09}
+                                        pos_hint: {'center_x': 0.85, 'center_y': 0.15}
                                         icon: 'plus'
                                         md_bg_color: app.default_bg_color 
                                         size_hint: None, None
                                         icon_size: '30sp'
+
                                         type: 'small'
+
                         
 
                         MDBottomNavigationItem:
@@ -119,11 +120,11 @@
                                     hint_text: "Rechercher des contacts"
                                     mode: "round" 
                                     size_hint_x: 0.94
-                                    pos_hint: {'center_x': 0.5}
+                                    pos_hint: {'center_x': 0.5, 'y':0.5}
                                     
                                 MDLabel:
-                                    text: "Récents"
-                                    font_size: '22'
+                                    text: "Journal des appels"
+                                    font_size: '18'
                                     size_hint_y: None
                                     size: 0, 30
                                     pos_hint: {'x': 0.03, 'center_y': 0.5}
@@ -136,7 +137,7 @@
                                         bar_width: 0
                                         scroll_type: ['content']
                                         MDBoxLayout:
-                                            id: 'call_logs'
+                                            id: call_logs
                                             orientation: 'vertical'
                                             size_hint_y: None
                                             size: 0, self.minimum_height
@@ -164,7 +165,7 @@
                                     
                                 MDLabel:
                                     text: "Favoris"
-                                    font_size: '22'
+                                    font_size: '18'
                                     size_hint_y: None
                                     size: 0, 30
                                     pos_hint: {'x': 0.03, 'center_y': 0.5}
@@ -202,6 +203,7 @@
 
 
                 MDBoxLayout:   # Right content
+                    id: right_content
                     md_bg_color: app.default_bg_color
 
 

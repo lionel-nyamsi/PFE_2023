@@ -1,0 +1,43 @@
+#:import get_color_from_hex kivy.utils.get_color_from_hex
+
+MDCard:
+    on_press: app.load_discussion()
+    size_hint: 0.9, None
+    height: 60
+    pos_hint: {'center_x': 0.5}
+    md_bg_color: 1, 1, 1, 0
+    MDBoxLayout:
+        orientation: 'vertical'
+        MDBoxLayout:
+            orientation: 'horizontal'
+            md_bg_color: get_color_from_hex("#C7C7C7")
+            radius: 15
+            MDBoxLayout:
+                size_hint_x: None
+                width: 10
+            MDAnchorLayout:
+                size_hint: None, None
+                size: 40, 40
+                radius: 20
+                pos_hint: {'center_y': 0.5}
+                md_bg_color: 1, 2, 3, 1
+                MDLabel:
+                    text: 'P'
+                    font_size: 20
+                    valign: 'middle'
+                    halign: 'center'
+            MDBoxLayout:
+                size_hint_x: None
+                width: 20
+            MDBoxLayout:
+                orientation: 'vertical'
+                MDBoxLayout:
+                    size_hint_y: 1.7
+                    MDLabel:
+                        id: contact_name
+                        text: "Papa"
+                        anchor: 'left'
+                        font_size: 17
+        MDBoxLayout:
+            size_hint_y: None
+            height: 10
