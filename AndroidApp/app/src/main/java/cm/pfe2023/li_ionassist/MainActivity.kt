@@ -35,8 +35,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun nextPage() {
         timer.cancel()
-        val intent = Intent(this, RegistrationActivity()::class.java)
-        startActivity(intent)
+        val connection_page = Intent(this, ConnectionActivity()::class.java)
+        startActivity(connection_page)
     }
 
 }
