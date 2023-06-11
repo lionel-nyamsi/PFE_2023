@@ -1,5 +1,7 @@
 {
     "papa": {
+        "number": 658999999,
+        "color": "green",
         "sent": [
             [
                 "bonjour",
@@ -78,6 +80,8 @@
         ]
     },
     "maman": {
+        "number": 658777777,
+        "color": "red",
         "sent": [
             [
                 "bonjour",
@@ -156,6 +160,8 @@
         ]
     },
     "mambou": {
+        "number": 658555555,
+        "color": "blue",
         "sent": [
             [
                 "jdkf",
@@ -170,6 +176,8 @@
         ]
     },
     "jean": {
+        "number": 658998889,
+        "color": "purple",
         "sent": [],
         "received": [
             [

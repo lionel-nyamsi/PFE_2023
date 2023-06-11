@@ -33,14 +33,23 @@
         MDBoxLayout:
             orientation: 'vertical'
             MDBoxLayout:
-                orientation: 'vertical'
+                orientation: 'horizontal'
                 md_bg_color: get_color_from_hex("#C7C7C7")
                 size_hint_y: None
                 size: 0, 30
+                MDIconButton:
+                    icon: 'images/sms.png'
+                    icon_size: '20sp'
+                    padding: [15, 0, 40, 5]
                 MDLabel:
                     id: b
-                    text: '   Messages'
+                    text: 'Messages'
                     halign: 'left'
+                MDIconButton:
+                    icon: 'images/close.png'
+                    icon_size: '20sp'
+                    padding: [30, 25, 10, 10]
+                    on_press: app.change_screen('home')
             MDBoxLayout:
                 orientation: 'horizontal'
                 MDBoxLayout:
@@ -51,16 +60,14 @@
                         size_hint: 0.9, None
                         md_bg_color: get_color_from_hex("#FF13800")
                         size: 0, 75
-                        MDBoxLayout:
+                        MDTextField:
                             md_bg_color: get_color_from_hex("#C7C7C7")
-                            radius: 15
+                            hint_text: "Rechercher des messages"
+                            mode: "round"
+                            padding: 10, 0, 10, 0
+                            pos_hint: {'center_x': 0.55, 'center_y': 0.5}
                             size_hint_y: None
                             size: 0, 30
-                            pos_hint: {'center_x': 0.55, 'center_y': 0.5}
-                            padding: 10, 0, 10, 0
-                            MDLabel:
-                                opacity: 0.5
-                                text: 'Rechercher des messages'
                     MDFloatLayout:
                         ScrollView:
                             pos_hint: {'center_x': 0.5, 'top': 1}

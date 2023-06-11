@@ -4,6 +4,7 @@ import datetime
 
 def message_a_contact(contact, message_content):
 
+    global connection
     date_today = datetime.date.today()
     hour = datetime.datetime.now().hour
     minute = datetime.datetime.now().minute

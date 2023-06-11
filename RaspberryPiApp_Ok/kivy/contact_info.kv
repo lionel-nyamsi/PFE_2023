@@ -1,0 +1,26 @@
+#:import get_color_from_hex kivy.utils.get_color_from_hex
+
+MDBoxLayout:
+    md_bg_color: app.default_bg_color
+    orientation: "vertical"
+    MDBoxLayout:
+        size_hint_y: 0.5
+        orientation: "vertical"
+        MDBoxLayout:
+            orientation: "vertical"
+            size_hint: None, None
+            size: 200, 230
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+            id: name
+    MDFloatLayout:
+        size_hint_y: 0.5
+        orientation: "vertical"
+        MDBoxLayout:
+            orientation: "horizontal"
+            size_hint: 0.95, None
+            size: 0, 50
+            radius: 10
+            padding: 10, 0, 25, 0
+            pos_hint: {'center_x': 0.5, 'top': 0.95}
+            id: number
+

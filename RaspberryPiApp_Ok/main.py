@@ -1,23 +1,29 @@
+import time
+
+# import folium
 from kivymd.app import MDApp
 from kivy.uix.screenmanager import ScreenManager, SlideTransition
 from kivymd.uix.screen import MDScreen
 from kivymd.uix.label import MDLabel
-from kivymd.uix.boxlayout import MDBoxLayout
-from kivymd.uix.card import MDCard
+from kivymd.uix.floatlayout import MDFloatLayout
+# from kivymd.uix.card import MDCard
 from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.lang.builder import Builder
-
 import qrcode
 import threading
 import json
-import sqlite3
-from random import randrange
+# import sqlite3
+# from random import randrange
+
+# import discord
+# from discord.ext import tasks
 
 import src.vocal_command
-import src.data_exchange
-import src.contact as contactClass
-import src.message as messageClass
+
+
+# import src.contact as contactclass
+# import src.message as messageclass
 
 
 def back_ground():
@@ -32,7 +38,6 @@ class StartPage(MDScreen):
 
 
 class ConnexionPage(MDScreen):
-    adresse_mac = src.data_exchange.get_mac_address()
     text_instructions = [
         "Pour connecter votre téléphone à votre console multimedia, suivez les étapes suivantes ci dessous:",
         "1.  Ouvrez l'application LIION ASSIST sur votre smartphone; Bien vouloir la télécharger sur le Playstore si elle n'est pas encore installée ;",
@@ -44,14 +49,13 @@ class ConnexionPage(MDScreen):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
         qr = qrcode.QRCode(
             version=1,
             error_correction=qrcode.constants.ERROR_CORRECT_L,
             box_size=150,
             border=1
         )
-        code = self.adresse_mac
+        code = "ce_texte_est_un_code"
         qr.add_data(code)
         qr.make(fit=True)
         img_qr = qr.make_image(fill_color="black", back_color="white")
@@ -86,14 +90,10 @@ class MessagePage(MDScreen):
     pass
 
 
-def load_contact_card(contact):
-    contact_name = contact.name
-    contact_color = contact.color
-    contact_letter = contact_name[0]
-
-    KIVY_CODE = '''
+def load_contact_card(contact, color, *args):
+    kivi_code = '''
 MDCard:
-    on_press: ''' + str(contact.display_contact_info()) + '''
+    on_press: app.load_contact_info("''' + contact + '''") 
     size_hint: 0.9, None
     height: 60
     pos_hint: {'center_x': 0.5}
@@ -112,9 +112,9 @@ MDCard:
                 size: 40, 40
                 radius: 20
                 pos_hint: {'center_y': 0.5}
-                md_bg_color: "''' + contact_color + '''"
+                md_bg_color: "''' + color + '''"
                 MDLabel:
-                    text: "''' + contact_letter + '''"
+                    text: "''' + contact[0].upper() + '''"
                     font_size: 20
                     color: get_color_from_hex("#FFFFFF")
                     valign: 'middle'
@@ -127,7 +127,7 @@ MDCard:
                 MDBoxLayout:
                     size_hint_y: 1.7
                     MDLabel:
-                        text: "''' + contact_name + '''"
+                        text: "''' + contact.capitalize() + '''"
                         anchor: 'left'
                         font_size: 17
         MDBoxLayout:
@@ -135,20 +135,22 @@ MDCard:
             height: 10
 
     '''
-    return KIVY_CODE
+    return kivi_code
+
+
+def time_sms(m):
+    return m[1]
 
 
 class App(MDApp):
     default_text_color = "#C9C5C5"
     default_bg_color = "#0F0332"
     default_bar_color = "#39585B"
+    con = ''
     c = src.vocal_command.donnees_vocales
     sm = ScreenManager(transition=SlideTransition())
-    with open("donnee_sms.json") as json_file:
+    with open("data_base/data.json") as json_file:
         messages = json.load(json_file)
-
-    contact_list = []
-    messages_list = []
 
     def build(self):
         Window.size = [836, 584]
@@ -176,115 +178,193 @@ class App(MDApp):
 
     def on_start(self):
         src.vocal_command.text_to_voicenote("Bienvenue sur Liion Assist !")
-        Clock.schedule_once(self.toscreen1, 3)
+        self.toscreen1()
         Clock.schedule_interval(self.check_instruction, 0.01)
 
-    def load_discussion(self):
+    def order_message(self, contact, *args):
+        order = []
+        a = 0
+        for key in ["sent", "received"]:
+            for i in range(len(contact[key])):
+                order.append(contact[key][i])
+                order[a].append(key)
+                a += 1
+        return sorted(order, key=time_sms)
+
+    def load_discussion(self, contact, *args):
         w = Builder.load_file('kivy/chat_container.kv')
         self.sm.screens[4].ids.chat.clear_widgets()
         self.sm.screens[4].ids.chat.add_widget(w)
-        for i in range(max(len(self.messages['sent']), len(self.messages['received']))):
-            t1 = MDLabel(text=self.messages['sent'][i], font_size="14")
-            ar = MDBoxLayout(md_bg_color="#C7C7C7", size_hint={0.5, None}, size={0, 40}, radius=10, pos_hint={"x": 0, "top": 1})
-            ar.add_widget(t1)
-            t2 = MDLabel(text=self.messages['received'][i], font_size="14", halign='right')
-            br = MDBoxLayout(md_bg_color="#C7C7C7", size_hint={0.5, None}, size={0, 40}, radius=10, pos_hint={"right": 1, "top": 1})
-            br.add_widget(t2)
-            a = MDCard(size_hint={1, None}, size={0, 50}, pos_hint={"center_x": 0.5, "top": 1})
-            b = MDCard(size_hint={1, None}, size={0, 50}, pos_hint={"center_x": 0.5, "top": 1})
-            a.add_widget(ar)
-            b.add_widget(br)
+        text = self.order_message(self.messages[contact])
+        e = Builder.load_string("""
+#:import get_color_from_hex kivy.utils.get_color_from_hex
+MDLabel:
+    text: '   """ + contact.capitalize() + """'
+    font_size: 20
+    color: get_color_from_hex("#FFFFFF")
+    pos_hint: {"x": 0.5, "center_y": 0.5}"""
+                                )
+        w.ids.entete.add_widget(e)
+        for i in range(len(text)):
+            if len(text[i][0]) <= 30:
+                taille = 10 * len(text[i][0]) + 10
+            else:
+                taille = 300
+            hauteur = 10 + 18 * (1 + int(len(text[i][0])) / 30)
+            t1 = MDLabel(text="" + text[i][0] + "  ", font_size=14)
 
+            if text[i][2] == 'sent':
+                pos = """ "right": 1 """
+            else:
+                pos = """ "x": 0 """
+            ar = Builder.load_string("""
+#:import get_color_from_hex kivy.utils.get_color_from_hex
+MDBoxLayout:
+    orientation: 'vertical'
+    md_bg_color: get_color_from_hex("#C7C7C7")
+    size_hint: None, None
+    size: """ + str(taille) + """, """ + str(hauteur) + """
+    radius: 10
+    padding: 7, 0, 7, 0
+    pos_hint: {""" + pos + """, "top": 1}""")
+            ar.add_widget(t1)
+            a = MDFloatLayout(size_hint={1, None}, size={0, hauteur + 10}, pos_hint={"center_x": 0.5, "top": 1})
+            a.add_widget(ar)
             w.ids.messages.add_widget(a)
-            w.ids.messages.add_widget(b)
 
     def change_screen(self, screen):
         self.sm.current = screen
 
     def toscreen1(self, *args):
-        self.sm.current = 'CONNECTION'
+        self.sm.current = 'LIION'
+        Clock.schedule_once(lambda x: self.change_screen("CONNECTION"), 10)
 
     def load_chatlist(self):
-        '''
-        try:
-            connection = sqlite3.connect("data_base/db_liionAssist.db")
-            cursor = connection.cursor()
-
-            # request 1 -> for sent messages
-            request = 'SELECT name_reciever, phonenumber, message_content, date_sending, time_sending FROM sent_message'
-            result = cursor.execute(request)
-
-            for sms in result.fetchall():
-                print(sms)
-                message = messageClass.Message("user", sms[0], sms[1], sms[2], sms[3], sms[4])
-                self.messages_list.append(message)
-
-            # request 2 -> for recieved messages
-            request = 'SELECT name_sender, phonenumber, message_content, date_reception, time_reception FROM recieved_message'
-            result = cursor.execute(request)
-
-            for sms in result.fetchall():
-                print(sms)
-                message = messageClass.Message(sms[0], "user", sms[1], sms[2], sms[3], sms[4])
-                self.messages_list.append(message)
-
-        except Exception as error:
-            print("[ERROR] : {}".format(error))
-            connection.rollback()
-
-        finally:
-            connection.close()  '''
-
-        w = []
-        for i in range(5):
-            w.append(Builder.load_file('kivy/discussion_card.kv'))
-            self.sm.screens[4].ids.chatlist.add_widget(w[i])
+        # self.send_new_sms("jdkf", 202305251639, "mambou")
+        # self.receive_new_sms("ça veut dire quoi?", 202305251645, "mambou")
+        # self.receive_new_sms("yo", 202305251645, "jean")
+        for contact in self.messages.keys():
+            card = Builder.load_string("""
+MDCard:
+    on_press: app.load_discussion('""" + contact + """')
+    size_hint: 0.9, None
+    height: 60
+    pos_hint: {'center_x': 0.5}
+    md_bg_color: 1, 1, 1, 0""")
+            w = Builder.load_file('kivy/discussion_card.kv')
+            self.sm.screens[4].ids.chatlist.add_widget(card)
+            card.add_widget(w)
+            text = self.order_message(self.messages[contact])
+            if not text:
+                date = ''
+                last_sms = ''
+            else:
+                date = str(text[-1][1])[:4] + '/' + str(text[-1][1])[4:6] + '/' + str(text[-1][1])[6:8] + '  ' + str(
+                    text[-1][1])[8:10] + 'h' + str(text[-1][1])[10:]
+                last_sms = text[-1][0]
+            a = Builder.load_string("""
+MDLabel:
+    id: contact
+    text: '""" + contact.capitalize() + """'
+    anchor: 'left'
+    font_size: 18"""
+                                    )
+            b = Builder.load_string("""
+MDLabel:
+    text: '""" + date + """'
+    anchor: 'right'
+    font_size: 10"""
+                                    )
+            c = Builder.load_string("""
+#:import get_color_from_hex kivy.utils.get_color_from_hex
+MDLabel:
+    text: '""" + last_sms + """'
+    anchor: 'left'
+    font_size: 12
+    color: get_color_from_hex("#4E4C4C")"""
+                                    )
+            d = Builder.load_string("""
+MDBoxLayout:
+    md_bg_color: '""" + self.messages[contact]["color"] + """'
+    radius: 20
+    size: self.minimum_width, self.minimum_height
+    MDLabel:
+        text: '""" + contact[0].upper() + """'
+        anchor: 'right'
+        font_size: 22
+        color: 'white'
+        valign: 'middle'
+        halign: 'center'"""
+                                    )
+            w.ids.discus_inf.add_widget(a)
+            w.ids.discus_inf.add_widget(b)
+            w.ids.last_sms.add_widget(c)
+            w.ids.initial.add_widget(d)
 
     def load_contacts(self):
+        i = 0
+        for contact in self.messages:
+            kv = Builder.load_string(load_contact_card(contact, self.messages[contact]["color"]))
+            self.sm.screens[3].ids.contact_list.add_widget(kv)
+            i += 1
 
-        colors = ["green", "red", "yellow", "pink", "violet", "blue", "orange"]
+    def load_contact_info(self, contact, *args):
+        w = Builder.load_file('kivy/contact_info.kv')
+        self.sm.screens[3].ids.right_content.clear_widgets()
+        self.sm.screens[3].ids.right_content.add_widget(w)
+        a1 = Builder.load_string("""
+MDIconButton:
+    icon: 'images/phone2.png'
+    icon_size: '30sp'""")
+        a2 = Builder.load_string("""
+MDLabel:
+    text: '  """ + str(self.messages[contact]["number"]) + """'
+    font_size: 20
+    color: 'white'""")
+        a3 = Builder.load_string("""
+MDIconButton:
+    icon: 'images/sms2.png'
+    icon_size: '30sp'
+    halign: 'right' """)
+        b1 = Builder.load_string("""
+Image:
+    size_hint: None, None
+    size: 180, 180
+    source: 'images/user.png'
+    pos_hint: {'center_x': 0.5, 'top': 1}""")
+        b2 = Builder.load_string("""
+MDLabel:
+    text: '""" + contact.capitalize() + """'
+    font_size: 30
+    halign: "center"
+    color: 'white'""")
+        w.ids.number.add_widget(a1)
+        w.ids.number.add_widget(a2)
+        w.ids.number.add_widget(a3)
+        w.ids.name.add_widget(b1)
+        w.ids.name.add_widget(b2)
 
-        try:
-            connection = sqlite3.connect("data_base/db_liionAssist.db")
-            cursor = connection.cursor()
+    def add_contact(self, nom, number, color, *args):
+        mess = self.messages
+        mess.update({nom: {'number': number, 'color': color, 'sent': [], 'received': []}})
+        with open("data_base/data.json", 'w') as json_file:
+            json.dump(mess, json_file, indent=4)
 
-            request = 'SELECT name, phonenumber1, phonenumber2, phonenumber3 FROM contact'
-            result = cursor.execute(request)
+    def send_new_sms(self, sms, date, contact, number, color, *args):
+        mess = self.messages
+        if contact not in mess.keys():
+            self.add_contact(contact, number, color)
+        mess[contact]['sent'].append([sms, date])
+        with open("data_base/data.json", 'w') as json_file:
+            json.dump(mess, json_file, indent=4)
 
-            for contact in result.fetchall():
-                print(contact)
-
-                name = contact[0]
-                phonenumber1 = contact[1]
-                if contact[2] is not None or contact[2] != "":
-                    phonenumber2 = contact[2]
-                else:
-                    phonenumber2 = ""
-                if contact[3] is not None or contact[3] != "":
-                    phonenumber3 = contact[3]
-                else:
-                    phonenumber3 = ""
-
-                color = colors[randrange(len(colors))]
-                contact_ = contactClass.Contact(name, phonenumber1, color, phonenumber2, phonenumber3)
-                self.contact_list.append(contact_)
-
-            w = []
-            for i in range(len(self.contact_list)):
-                KV = load_contact_card(self.contact_list[i])
-                w.append(Builder.load_string(KV))
-                self.sm.screens[3].ids.contact_list.add_widget(w[i])
-
-        except Exception as error:
-            print("[ERROR] : {}".format(error))
-            connection.rollback()
-
-        finally:
-            connection.close()
-
-    def load_contact_info(self):
-        for contact in self.contact_list:
-            print(contact)
+    def receive_new_sms(self, sms, date, contact, number, color, *args):
+        mess = self.messages
+        if contact not in mess.keys():
+            self.add_contact(contact, number, color)
+        mess[contact]['received'].append([sms, date])
+        with open("data_base/data.json", 'w') as json_file:
+            json.dump(mess, json_file, indent=4)
 
     def load_all_kv_files(self, **kwargs):
         Builder.load_file('kivy/start_page.kv')
@@ -302,10 +382,12 @@ class App(MDApp):
             self.change_screen('home')
         if src.vocal_command.donnees_vocales[-1] == "message":
             self.change_screen('message')
-        if src.vocal_command.donnees_vocales[-1] == "téléphone":
-            self.change_screen('phone')
-        if src.vocal_command.donnees_vocales[-1] == "affiche discussion":
-            self.load_discussion()
+        if "affiche discussion" in src.vocal_command.donnees_vocales[-1]:
+            if src.vocal_command.donnees_vocales[-1] == "affiche discussion":
+                src.vocal_command.text_to_voicenote("repetez")
+                time.sleep(1)
+            else:
+                self.load_discussion(src.vocal_command.donnees_vocales[-1].split(" ")[2])
         if src.vocal_command.donnees_vocales[-1] == "fin":
             self.stop()
 
@@ -313,6 +395,5 @@ class App(MDApp):
 app = App()
 
 if __name__ == "__main__":
-
     app.run()
     src.vocal_command.text_to_voicenote("Au revoir, à la prochaine !")
