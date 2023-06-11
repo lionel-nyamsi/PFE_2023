@@ -14,10 +14,8 @@ import json
 import sqlite3
 from random import randrange
 
-import discord
-from discord.ext import tasks
-
 import src.vocal_command
+import src.data_exchange
 import src.contact as contactClass
 import src.message as messageClass
 
@@ -34,6 +32,7 @@ class StartPage(MDScreen):
 
 
 class ConnexionPage(MDScreen):
+    adresse_mac = src.data_exchange.get_mac_address()
     text_instructions = [
         "Pour connecter votre téléphone à votre console multimedia, suivez les étapes suivantes ci dessous:",
         "1.  Ouvrez l'application LIION ASSIST sur votre smartphone; Bien vouloir la télécharger sur le Playstore si elle n'est pas encore installée ;",
@@ -45,13 +44,14 @@ class ConnexionPage(MDScreen):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
         qr = qrcode.QRCode(
             version=1,
             error_correction=qrcode.constants.ERROR_CORRECT_L,
             box_size=150,
             border=1
         )
-        code = "ce_texte_est_un_code"
+        code = self.adresse_mac
         qr.add_data(code)
         qr.make(fit=True)
         img_qr = qr.make_image(fill_color="black", back_color="white")
@@ -248,22 +248,20 @@ class App(MDApp):
             connection = sqlite3.connect("data_base/db_liionAssist.db")
             cursor = connection.cursor()
 
-            request = 'SELECT name, firstname, phonenumber1, phonenumber2, phonenumber3 FROM contact'
+            request = 'SELECT name, phonenumber1, phonenumber2, phonenumber3 FROM contact'
             result = cursor.execute(request)
 
             for contact in result.fetchall():
                 print(contact)
-                if contact[1] is not None and contact[1] != "":
-                    name = contact[0] + " " + contact[1]
-                else:
-                    name = contact[0]
-                phonenumber1 = contact[2]
-                if contact[3] is not None or contact[3] != "":
-                    phonenumber2 = contact[3]
+
+                name = contact[0]
+                phonenumber1 = contact[1]
+                if contact[2] is not None or contact[2] != "":
+                    phonenumber2 = contact[2]
                 else:
                     phonenumber2 = ""
-                if contact[4] is not None or contact[4] != "":
-                    phonenumber3 = contact[4]
+                if contact[3] is not None or contact[3] != "":
+                    phonenumber3 = contact[3]
                 else:
                     phonenumber3 = ""
 
