@@ -13,13 +13,13 @@ from kivy.lang.builder import Builder
 import qrcode
 import threading
 import json
-# import sqlite3
 # from random import randrange
 
 # import discord
 # from discord.ext import tasks
 
 import src.vocal_command
+import src.data_exchange
 
 
 # import src.contact as contactclass
@@ -55,8 +55,8 @@ class ConnexionPage(MDScreen):
             box_size=150,
             border=1
         )
-        code = "ce_texte_est_un_code"
-        qr.add_data(code)
+        adresse_mac = src.data_exchange.get_mac_address()
+        qr.add_data(adresse_mac)
         qr.make(fit=True)
         img_qr = qr.make_image(fill_color="black", back_color="white")
         img_qr.save("images/qrcode.png")
