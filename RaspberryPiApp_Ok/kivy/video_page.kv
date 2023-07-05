@@ -13,7 +13,7 @@
                 icon: "images/home.png"
                 icon_size: 50
                 pos_hint: {"center_x": 0.5, "y": 0}
-                on_press: app.stop()
+                on_press: app.change_screen('home')
             MDBoxLayout:
                 orientation: "vertical"
                 size_hint: None, None
@@ -30,5 +30,26 @@
                     font_size: 12
                     color: get_color_from_hex("#FFFFFF")
 
-        MDFloatLayout:
+        MDBoxLayout:  # Phone page
+            orientation: "vertical"
+            MDBoxLayout:  # Title bar
+                orientation: "horizontal"
+                md_bg_color: get_color_from_hex("#C7C7C7")
+                size_hint_y: None
+                size: 0, 30
+                MDIconButton:
+                    icon: 'images/video.png'
+                    icon_size: '20sp'
+                    padding: [15, 0, 40, 5]
+                MDLabel:
+                    id: phone
+                    text: 'Vidéos'
+                    halign: 'left'
+                MDIconButton:
+                    icon: 'images/close.png'
+                    icon_size: '20sp'
+                    padding: [30, 25, 10, 10]
+                    on_press: app.change_screen('home')
+
+            MDFloatLayout:
 

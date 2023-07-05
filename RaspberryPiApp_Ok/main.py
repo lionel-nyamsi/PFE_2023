@@ -13,6 +13,7 @@ from kivy.lang.builder import Builder
 import qrcode
 import threading
 import json
+import datetime
 # from random import randrange
 
 # import discord
@@ -25,9 +26,20 @@ import src.data_exchange
 # import src.contact as contactclass
 # import src.message as messageclass
 
+date_today = ""
+time_now = ""
 
 def back_ground():
     src.vocal_command.read_vocal_data()
+    
+    global date_today 
+    global time_now
+
+    date_today = datetime.date.today()
+    hour = datetime.datetime.now().hour
+    minute = datetime.datetime.now().minute
+
+    time_now = str(hour) + ":" + str(minute)
 
 
 bg_task = threading.Thread(target=back_ground, daemon=True)
@@ -152,6 +164,8 @@ class App(MDApp):
     with open("data_base/data.json") as json_file:
         messages = json.load(json_file)
 
+    global time
+
     def build(self):
         Window.size = [836, 584]
         self.title = "LIION ASSIST"
@@ -177,8 +191,8 @@ class App(MDApp):
         return self.sm
 
     def on_start(self):
-        src.vocal_command.text_to_voicenote("Bienvenue sur Liion Assist !")
         self.toscreen1()
+        src.vocal_command.text_to_voicenote("Bienvenue sur Liion Assist !")
         Clock.schedule_interval(self.check_instruction, 0.01)
 
     def order_message(self, contact, *args):
@@ -237,7 +251,7 @@ MDBoxLayout:
 
     def toscreen1(self, *args):
         self.sm.current = 'LIION'
-        Clock.schedule_once(lambda x: self.change_screen("CONNECTION"), 10)
+        Clock.schedule_once(lambda x: self.change_screen("CONNECTION"), 1)
 
     def load_chatlist(self):
         # self.send_new_sms("jdkf", 202305251639, "mambou")
@@ -307,6 +321,9 @@ MDBoxLayout:
             kv = Builder.load_string(load_contact_card(contact, self.messages[contact]["color"]))
             self.sm.screens[3].ids.contact_list.add_widget(kv)
             i += 1
+        
+        #w = Builder.load_file('kivy/home_page.kv')
+        #self.sm.screens[3].ids.time.text = time
 
     def load_contact_info(self, contact, *args):
         w = Builder.load_file('kivy/contact_info.kv')
@@ -380,16 +397,25 @@ MDLabel:
     def check_instruction(self, *args):
         if src.vocal_command.donnees_vocales[-1] == "accueil":
             self.change_screen('home')
+        if src.vocal_command.donnees_vocales[-1] == "téléphone":
+            self.change_screen('phone')
         if src.vocal_command.donnees_vocales[-1] == "message":
             self.change_screen('message')
+        if src.vocal_command.donnees_vocales[-1] == "gps":
+            self.change_screen('gps')
+        if src.vocal_command.donnees_vocales[-1] == "musique":
+            self.change_screen('music')
+        if src.vocal_command.donnees_vocales[-1] == "vidéo":
+            self.change_screen('video')
         if "affiche discussion" in src.vocal_command.donnees_vocales[-1]:
             if src.vocal_command.donnees_vocales[-1] == "affiche discussion":
                 src.vocal_command.text_to_voicenote("repetez")
                 time.sleep(1)
             else:
                 self.load_discussion(src.vocal_command.donnees_vocales[-1].split(" ")[2])
-        if src.vocal_command.donnees_vocales[-1] == "fin":
+        if src.vocal_command.donnees_vocales[-1] == "fin" or src.vocal_command.donnees_vocales[-1] == "femme":
             self.stop()
+        pass
 
 
 app = App()

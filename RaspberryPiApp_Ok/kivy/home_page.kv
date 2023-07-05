@@ -16,19 +16,11 @@
                 on_press: app.stop()
             MDBoxLayout:
                 orientation: "vertical"
+                id: datetime
                 size_hint: None, None
                 size: 75, 50
                 pos_hint: {"center_x": 0.5, "top": 1}
-                MDLabel:
-                    halign: 'center'
-                    text: '15:45'
-                    font_size: 18
-                    color: get_color_from_hex("#FFFFFF")
-                MDLabel:
-                    halign: 'center'
-                    text: '12/12/2022'
-                    font_size: 12
-                    color: get_color_from_hex("#FFFFFF")
+                
 
         MDFloatLayout:
             MDBoxLayout:

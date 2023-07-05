@@ -72,18 +72,26 @@
                             BoxLayout:
                                 orientation: "vertical"
 
-                                MDTextField:
-                                    hint_text: "Rechercher des contacts"
-                                    mode: "round" 
-                                    pos_hint: {'center_x': 0.5, 'center_y': 0.95}
-                                    size_hint_x: 0.94
+                                MDFloatLayout:
+                                    orientation: 'vertical'
+                                    size_hint_x: 0.9
+                                    md_bg_color: get_color_from_hex("#FF13800")
+                                    size: 0, 75
+                                    MDTextField:
+                                        md_bg_color: get_color_from_hex("#C7C7C7")
+                                        hint_text: "Rechercher des contacts"
+                                        mode: "round"
+                                        padding: 10, 0, 10, 0
+                                        pos_hint: {'center_x': 0.55, 'y': 0.1, 'center_y': 0.15}
+                                        size_hint_y: None
+                                        size: 0, 30
                                     
                                 MDLabel:
                                     text: "Contacts"
                                     font_size: '18'
                                     size_hint_y: None
                                     size: 0, 30
-                                    pos_hint: {'x': 0.03, 'center_y': 0.5}
+                                    pos_hint: {'x': 0.05, 'y': 1.2}
 
                                 MDFloatLayout:
                                     ScrollView:
@@ -116,11 +124,16 @@
                             BoxLayout:
                                 orientation: "vertical"
 
-                                MDTextField:
-                                    hint_text: "Rechercher des contacts"
-                                    mode: "round" 
-                                    size_hint_x: 0.94
-                                    pos_hint: {'center_x': 0.5, 'y':0.5}
+                                MDFloatLayout:
+                                    orientation: 'vertical'
+                                    size_hint: 0.9, None
+                                    md_bg_color: get_color_from_hex("#FF13800")
+                                    MDTextField:
+                                        md_bg_color: get_color_from_hex("#C7C7C7")
+                                        hint_text: "Rechercher des contacts"
+                                        mode: "round"
+                                        pos_hint: {'x': 0.05, 'y': 0.5}
+                                        size_hint_y: None
                                     
                                 MDLabel:
                                     text: "Journal des appels"
@@ -157,11 +170,16 @@
                             BoxLayout:
                                 orientation: "vertical"
 
-                                MDTextField:
-                                    hint_text: "Rechercher des contacts"
-                                    mode: "round" 
-                                    size_hint_x: 0.94
-                                    pos_hint: {'center_x': 0.5}
+                                MDFloatLayout:
+                                    orientation: 'vertical'
+                                    size_hint: 0.9, None
+                                    md_bg_color: get_color_from_hex("#FF13800")
+                                    MDTextField:
+                                        md_bg_color: get_color_from_hex("#C7C7C7")
+                                        hint_text: "Rechercher des contacts"
+                                        mode: "round"
+                                        pos_hint: {'x': 0.05, 'y': 0.5}
+                                        size_hint_y: None
                                     
                                 MDLabel:
                                     text: "Favoris"

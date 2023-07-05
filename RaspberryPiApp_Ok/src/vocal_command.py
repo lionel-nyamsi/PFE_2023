@@ -13,7 +13,7 @@ donnees_vocales = ['0']
 
 
 def int_or_str(text):
-    """Helper function for argument parsing."""
+   # Helper function for argument parsing.
     try:
         return int(text)
     except ValueError:
@@ -21,7 +21,7 @@ def int_or_str(text):
 
 
 def callback(indata, frames, time, status):
-    """This is called (from a separate thread) for each audio block."""
+    # This is called (from a separate thread) for each audio block.
     if status:
         print(status, file=sys.stderr)
     q.put(bytes(indata))
@@ -102,3 +102,5 @@ def text_to_voicenote(text):
     voice.say(text)
 
     voice.runAndWait()
+
+

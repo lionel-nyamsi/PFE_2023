@@ -1,13 +1,13 @@
-import netifaces
+#import netifaces
 
-interfaces = netifaces.interfaces()
+#interfaces = netifaces.interfaces()
 mac_addr = None
 
 
 def get_mac_address():
     # Faire une boucle sur toutes les interfaces pour trouver l'adresse MAC
     global mac_addr
-    for interface in interfaces:
+    """for interface in interfaces:
         try:
             # Obtenir les adresses IP et MAC de l'interface
             addrs = netifaces.ifaddresses(interface)
@@ -15,6 +15,6 @@ def get_mac_address():
             break
 
         except:
-            pass
+            pass"""
 
-    return mac_addr
+    return "mac_addr"
