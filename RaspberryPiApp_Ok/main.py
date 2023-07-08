@@ -22,25 +22,12 @@ import datetime
 import src.vocal_command
 import src.data_exchange
 
-
 # import src.contact as contactclass
 # import src.message as messageclass
 
-date_today = ""
-time_now = ""
 
 def back_ground():
     src.vocal_command.read_vocal_data()
-    
-    global date_today 
-    global time_now
-
-    date_today = datetime.date.today()
-    hour = datetime.datetime.now().hour
-    minute = datetime.datetime.now().minute
-
-    time_now = str(hour) + ":" + str(minute)
-
 
 bg_task = threading.Thread(target=back_ground, daemon=True)
 
@@ -164,7 +151,6 @@ class App(MDApp):
     with open("data_base/data.json") as json_file:
         messages = json.load(json_file)
 
-    global time
 
     def build(self):
         Window.size = [836, 584]
@@ -194,6 +180,7 @@ class App(MDApp):
         self.toscreen1()
         src.vocal_command.text_to_voicenote("Bienvenue sur Liion Assist !")
         Clock.schedule_interval(self.check_instruction, 0.01)
+        # Clock.schedule_interval(self.set_datetime, 60)
 
     def order_message(self, contact, *args):
         order = []
@@ -245,6 +232,34 @@ MDBoxLayout:
             a = MDFloatLayout(size_hint={1, None}, size={0, hauteur + 10}, pos_hint={"center_x": 0.5, "top": 1})
             a.add_widget(ar)
             w.ids.messages.add_widget(a)
+
+    def set_datetime(self, *args):
+
+        date_today = datetime.date.today()
+        hour = datetime.datetime.now().hour
+        minute = datetime.datetime.now().minute
+
+        time_now = str(hour) + ":" + str(minute)
+
+        time = """
+MDLabel:
+    halign: 'center'
+    text: '""" + time_now + """'
+    font_size: 18
+    color: get_color_from_hex("#FFFFFF")
+                    """
+        date = """
+MDLabel:
+    halign: 'center'
+    text: '""" + str(date_today) + """'
+    font_size: 18
+    color: get_color_from_hex("#FFFFFF")
+ """
+        time_widget = Builder.load_string(time)
+        self.sm.screens[2].ids.datetime.clear_widgets()
+        self.sm.screens[2].ids.datetime.add_widget(time_widget)
+        date_widget = Builder.load_string(date)
+        self.sm.screens[2].ids.datetime.add_widget(date_widget)
 
     def change_screen(self, screen):
         self.sm.current = screen
@@ -321,9 +336,9 @@ MDBoxLayout:
             kv = Builder.load_string(load_contact_card(contact, self.messages[contact]["color"]))
             self.sm.screens[3].ids.contact_list.add_widget(kv)
             i += 1
-        
-        #w = Builder.load_file('kivy/home_page.kv')
-        #self.sm.screens[3].ids.time.text = time
+
+        # w = Builder.load_file('kivy/home_page.kv')
+        # self.sm.screens[3].ids.time.text = time
 
     def load_contact_info(self, contact, *args):
         w = Builder.load_file('kivy/contact_info.kv')
@@ -395,6 +410,7 @@ MDLabel:
         Builder.load_file('kivy/message_page.kv')
 
     def check_instruction(self, *args):
+
         if src.vocal_command.donnees_vocales[-1] == "accueil":
             self.change_screen('home')
         if src.vocal_command.donnees_vocales[-1] == "téléphone":
@@ -416,6 +432,8 @@ MDLabel:
         if src.vocal_command.donnees_vocales[-1] == "fin" or src.vocal_command.donnees_vocales[-1] == "femme":
             self.stop()
         pass
+
+
 
 
 app = App()
