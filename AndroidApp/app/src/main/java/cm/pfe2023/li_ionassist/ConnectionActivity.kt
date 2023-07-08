@@ -17,7 +17,7 @@ class ConnectionActivity : AppCompatActivity() {
     }
 
     private fun nextPage() {
-        val scan_page = Intent(this, TestFonctionalities()::class.java)
+        val scan_page = Intent(this, ScanCodeActivity()::class.java)
         startActivity(scan_page)
     }
 }

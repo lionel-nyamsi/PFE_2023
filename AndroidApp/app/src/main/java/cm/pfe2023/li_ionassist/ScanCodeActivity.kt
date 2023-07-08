@@ -1,13 +1,17 @@
 package cm.pfe2023.li_ionassist
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.bluetooth.BluetoothAdapter
+import android.bluetooth.BluetoothDevice
+import android.bluetooth.BluetoothSocket
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.provider.ContactsContract
 import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -21,10 +25,15 @@ import com.budiyev.android.codescanner.ErrorCallback
 import com.budiyev.android.codescanner.ScanMode
 import java.io.IOException
 import java.util.*
+import kotlin.collections.ArrayList
 
 private const val CAMERA_REQUEST_CODE = 101
 private const val REQUEST_ENABLE_BT = 101
-var ADRESSE_PC = ""
+private const val CONTACT_REQUEST_CODE = 100
+
+var contactsList : MutableList<String> = mutableListOf()
+
+var ADRESSE_CONSOLE = ""
 
 @Suppress("DEPRECATION")
 class ScanCodeActivity : AppCompatActivity() {
@@ -32,6 +41,7 @@ class ScanCodeActivity : AppCompatActivity() {
     private lateinit var codeScanner: CodeScanner
     private var qrcode_text : String = ""
 
+    @RequiresApi(Build.VERSION_CODES.S)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_scan_code)
@@ -41,10 +51,16 @@ class ScanCodeActivity : AppCompatActivity() {
     }
 
     private fun setupPermissions() {
-        val permission = ContextCompat.checkSelfPermission(this,
+        val permissionCamera = ContextCompat.checkSelfPermission(this,
                             android.Manifest.permission.CAMERA)
-        if(permission != PackageManager.PERMISSION_GRANTED) {
+        val accesContactPermission = ContextCompat.checkSelfPermission(this,
+                            android.Manifest.permission.READ_CONTACTS)
+
+        if(permissionCamera != PackageManager.PERMISSION_GRANTED) {
             askCameraPermission()
+        }
+        if(accesContactPermission != PackageManager.PERMISSION_GRANTED) {
+            askContactPermission()
         }
     }
 
@@ -54,21 +70,28 @@ class ScanCodeActivity : AppCompatActivity() {
             CAMERA_REQUEST_CODE)
     }
 
+    private fun askContactPermission() {
+        ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.READ_CONTACTS,
+                                                                android.Manifest.permission.WRITE_CONTACTS),
+                                                        CONTACT_REQUEST_CODE)
+    }
+
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
 
         when(requestCode){
             CAMERA_REQUEST_CODE -> {
                 if(grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(this, "Vous devez autoriser l'accès à la caméra pour établir la connexion avec la console.", Toast.LENGTH_LONG)
+                    Toast.makeText(this, "Vous devez autoriser l'accès à la caméra pour établir la connexion avec la console.", Toast.LENGTH_LONG).show()
                 }
                 else {
-                    Toast.makeText(this, "Connexion...", Toast.LENGTH_SHORT)
+                    Toast.makeText(this, "Connexion...", Toast.LENGTH_SHORT).show()
                 }
             }
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
+    @RequiresApi(Build.VERSION_CODES.S)
     private fun scanQRCode() {
         val scanner_view = findViewById<CodeScannerView>(R.id.scanner_data)
         codeScanner = CodeScanner(this, scanner_view)
@@ -85,8 +108,12 @@ class ScanCodeActivity : AppCompatActivity() {
             decodeCallback = DecodeCallback {
                 runOnUiThread {
                     qrcode_text = it.text
-                    ADRESSE_PC = qrcode_text
-                    connect()
+                    ADRESSE_CONSOLE = qrcode_text
+                    if(connect())
+                        nextPage()
+                    //else
+                        //Toast.makeText(this, "La tentative de connexion a échouée. Veuillez réessayer!", Toast.LENGTH_SHORT).show()
+
                 }
             }
 
@@ -112,38 +139,31 @@ class ScanCodeActivity : AppCompatActivity() {
         super.onPause()
     }
 
-    private fun connect() {
-        val bluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
-        if(bluetoothAdapter == null){
-            Toast.makeText(this, "Bluetooth indisponible.", Toast.LENGTH_SHORT).show()
-        }
-        else {
-            if(!bluetoothAdapter.isEnabled){
-                val intent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
-                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT
-                    ) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(this,
-                        arrayOf(android.Manifest.permission.BLUETOOTH_CONNECT), REQUEST_ENABLE_BT)
-                }
-                startActivityForResult(intent, REQUEST_ENABLE_BT)
-            }
 
-            try {
-                val console = bluetoothAdapter.getRemoteDevice(ADRESSE_PC)
-                val uuid = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB")
-                val socket = console.createInsecureRfcommSocketToServiceRecord(uuid)
+    private fun connect(): Boolean {
+        val bluetoothClient = BluetoothClient(this, this)
+        bluetoothClient.connect("88:83:5d:fd:7a:af")
 
-                socket.connect()
-                nextPage()
-            } catch (error: IOException) {
-                Toast.makeText(this, "Une erreur est survenue lors de la connexion.", Toast.LENGTH_LONG).show()
-            }
-        }
+        return bluetoothClient.isConnected()
     }
 
     private fun nextPage() {
-        val connection_succesful_page = Intent(this, ConnectionSuccesfulActivity()::class.java)
-        startActivity(connection_succesful_page)
+        setContentView(R.layout.fragment_connection_succesful)
     }
 
+    /*@SuppressLint("Range")
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun readContact() {
+        val contacts = contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null)
+        if (contacts != null) {
+            while (contacts.moveToNext()) {
+                val name = contacts.getString(contacts.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
+                val number = contacts.getString(contacts.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
+
+                contactsList.add(name)
+            }
+        }
+    }*/
+
 }
+
