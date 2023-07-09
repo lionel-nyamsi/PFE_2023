@@ -1,12 +1,12 @@
-<?xml version="1.0" encoding="UTF-8"?><project name="Planification_PFE" company="LIION_ASSIST" webLink="http://https://www.figma.com/file/5Catcqp6jAMZKfFqMtbx0e/PFE2023-team-library?node-id=0%3A1&amp;t=Fb064cc3FTHBRsxH-1" view-date="2022-11-01" view-index="0" gantt-divider-location="350" resource-divider-location="308" version="3.2.3230" locale="fr_FR">
+<?xml version="1.0" encoding="UTF-8"?><project name="Planification_PFE" company="LIION_ASSIST" webLink="http://https://www.figma.com/file/5Catcqp6jAMZKfFqMtbx0e/PFE2023-team-library?node-id=0%3A1&amp;t=Fb064cc3FTHBRsxH-1" view-date="2022-11-01" view-index="0" gantt-divider-location="335" resource-divider-location="308" version="3.2.3230" locale="fr_FR">
     <description/>
     <view zooming-state="default:8" id="gantt-chart">
-        <field id="tpd3" name="Nom" width="189" order="0"/>
-        <field id="tpd4" name="Date de début" width="73" order="1"/>
-        <field id="tpd5" name="Date de fin" width="72" order="2"/>
+        <field id="tpd3" name="Nom" width="181" order="0"/>
+        <field id="tpd4" name="Date de début" width="70" order="1"/>
+        <field id="tpd5" name="Date de fin" width="68" order="2"/>
         <option id="filter.completedTasks" value="false"/>
         <timeline>
-            <![CDATA[7,0,4,13,5,2,6,9,1,12,8]]>
+            <![CDATA[9,2,8,0,1,7,4,13,12,5,6]]>
         </timeline>
     </view>
     <view id="resource-table">
@@ -61,30 +61,30 @@
             <depend id="6" type="2" difference="0" hardness="Strong"/>
             <depend id="8" type="2" difference="0" hardness="Strong"/>
         </task>
-        <task id="6" name="Familiarisation avec Git &amp; GitHub" color="#8cb6ce" meeting="false" start="2023-01-06" duration="15" complete="60" thirdDate="2022-10-20" thirdDate-constraint="0" expand="true"/>
+        <task id="6" name="Familiarisation avec Git &amp; GitHub" color="#8cb6ce" meeting="false" start="2023-01-06" duration="15" complete="100" thirdDate="2022-10-20" thirdDate-constraint="0" expand="true"/>
         <task id="7" name="Developpement Front-end de l'application Android" color="#8cb6ce" meeting="false" start="2023-01-31" duration="14" complete="100" thirdDate="2022-10-20" thirdDate-constraint="0" expand="true">
             <depend id="9" type="2" difference="0" hardness="Strong"/>
         </task>
-        <task id="8" name="Developpement Front-end de l'application sur Raspberry Pi" color="#8cb6ce" meeting="false" start="2023-01-31" duration="21" complete="30" thirdDate="2022-10-20" thirdDate-constraint="0" expand="true">
+        <task id="8" name="Developpement Front-end de l'application sur Raspberry Pi" color="#8cb6ce" meeting="false" start="2023-01-31" duration="21" complete="100" thirdDate="2022-10-20" thirdDate-constraint="0" expand="true">
             <depend id="11" type="2" difference="0" hardness="Strong"/>
         </task>
-        <task id="9" name="Developpement Back-end de l'application Android" color="#8cb6ce" meeting="false" start="2023-02-14" duration="14" complete="0" thirdDate="2022-10-20" thirdDate-constraint="0" expand="true">
+        <task id="9" name="Developpement Back-end de l'application Android" color="#8cb6ce" meeting="false" start="2023-02-14" duration="14" complete="70" thirdDate="2022-10-20" thirdDate-constraint="0" expand="true">
             <depend id="10" type="2" difference="0" hardness="Strong"/>
         </task>
-        <task id="11" name="Developpement Back-end des fonctionnalités appels et Messages l'application sur Raspberry Pi" color="#8cb6ce" meeting="false" start="2023-02-21" duration="21" complete="0" thirdDate="2022-10-20" thirdDate-constraint="0" priority="4" expand="true">
+        <task id="11" name="Developpement Back-end des fonctionnalités appels et Messages l'application sur Raspberry Pi" color="#8cb6ce" meeting="false" start="2023-02-21" duration="21" complete="80" thirdDate="2022-10-20" thirdDate-constraint="0" priority="4" expand="true">
             <depend id="12" type="2" difference="0" hardness="Strong"/>
             <depend id="13" type="2" difference="0" hardness="Strong"/>
         </task>
-        <task id="10" name="Etablissement de la communication entre les deux applications" color="#8cb6ce" meeting="false" start="2023-03-21" duration="7" complete="0" thirdDate="2022-10-20" thirdDate-constraint="0" priority="4" expand="true">
+        <task id="10" name="Etablissement de la communication entre les deux applications" color="#8cb6ce" meeting="false" start="2023-03-21" duration="7" complete="40" thirdDate="2022-10-20" thirdDate-constraint="0" priority="4" expand="true">
             <depend id="12" type="2" difference="0" hardness="Strong"/>
             <depend id="14" type="2" difference="0" hardness="Strong"/>
         </task>
-        <task id="12" name="Developpement Back-end de la fonctionnalité GPS de l'application sur Raspberry Pi" color="#8cb6ce" meeting="false" start="2023-03-28" duration="7" complete="0" thirdDate="2022-10-20" thirdDate-constraint="0" expand="true"/>
-        <task id="13" name="Developpement Back-end des fonctionnalités Musics et Vidéos de l'application sur Raspberry Pi" color="#8cb6ce" meeting="false" start="2023-03-14" duration="7" complete="0" thirdDate="2022-10-20" thirdDate-constraint="0" expand="true">
+        <task id="12" name="Developpement Back-end de la fonctionnalité GPS de l'application sur Raspberry Pi" color="#8cb6ce" meeting="false" start="2023-03-28" duration="7" complete="30" thirdDate="2022-10-20" thirdDate-constraint="0" expand="true"/>
+        <task id="13" name="Developpement Back-end des fonctionnalités Musics et Vidéos de l'application sur Raspberry Pi" color="#8cb6ce" meeting="false" start="2023-03-14" duration="7" complete="15" thirdDate="2022-10-20" thirdDate-constraint="0" expand="true">
             <depend id="10" type="2" difference="0" hardness="Strong"/>
             <depend id="14" type="2" difference="0" hardness="Strong"/>
         </task>
-        <task id="14" name="Implementation de la commande vocale" color="#8cb6ce" meeting="false" start="2023-03-28" duration="20" complete="0" thirdDate="2022-10-20" thirdDate-constraint="0" expand="true"/>
+        <task id="14" name="Implementation de la commande vocale" color="#8cb6ce" meeting="false" start="2023-03-28" duration="20" complete="25" thirdDate="2022-10-20" thirdDate-constraint="0" expand="true"/>
     </tasks>
     <resources>
         <resource id="0" name="MAMBOU TSAGUE Duval Trésor" function="SoftwareDevelopment:2" contacts="duvalmambou@gmail.com" phone="+237 696 04 45 12"/>
